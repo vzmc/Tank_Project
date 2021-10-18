@@ -27,7 +27,6 @@ public class TankMoveController : MonoBehaviour
 
     private void OnMove(InputValue inputValue)
     {
-        Debug.Log(inputValue.Get<Vector2>());
         currentMoveInputValue = inputValue.Get<Vector2>();
     }
 }
