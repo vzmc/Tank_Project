@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 417417457}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Fort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   - {fileID: 4548801507459449309}
   - {fileID: 4548801506649809435}
   m_Father: {fileID: 4548801507352555747}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1228192671
 GameObject:
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228192672}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,37 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4548801507352555747}
-  m_RootOrder: 2
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1695643182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1695643183}
+  m_Layer: 2
+  m_Name: ChinemachineTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1695643183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695643182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4548801507352555747}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &440497061864658833
 GameObject:
@@ -72,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8681117310606452052}
   - component: {fileID: 8169973831704339723}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wheel_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +148,7 @@ GameObject:
   - component: {fileID: 4548801506346751378}
   - component: {fileID: 4548801506346751391}
   - component: {fileID: 4548801506346751376}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BarrelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +229,7 @@ GameObject:
   - component: {fileID: 4548801506601174251}
   - component: {fileID: 4548801506601174248}
   - component: {fileID: 4548801506601174249}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4548801506649809435}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +341,7 @@ GameObject:
   - component: {fileID: 4548801507115349050}
   - component: {fileID: 4548801507115350983}
   - component: {fileID: 4548801507115349048}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +422,7 @@ GameObject:
   - component: {fileID: 4548801507308368435}
   - component: {fileID: 4548801507308368436}
   - component: {fileID: 4548801507308368437}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +445,7 @@ Transform:
   - {fileID: 1143109754481123748}
   - {fileID: 8681117310606452052}
   m_Father: {fileID: 4548801507352555747}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4548801507308368436
 MeshFilter:
@@ -479,7 +509,9 @@ GameObject:
   - component: {fileID: 1529410340}
   - component: {fileID: 4635877526397537178}
   - component: {fileID: 4548801506365293513}
-  m_Layer: 0
+  - component: {fileID: 2031668372}
+  - component: {fileID: 4127482818140775092}
+  m_Layer: 2
   m_Name: Tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,6 +529,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.19, z: -5.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1695643183}
   - {fileID: 4548801507308368435}
   - {fileID: 417417457}
   - {fileID: 1228192672}
@@ -576,6 +609,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   rotateSpeed: 4
+--- !u!114 &2031668372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548801507352555748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a145054a81faa4cb9aa68bf604b3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineTarget: {fileID: 1695643183}
+--- !u!114 &4127482818140775092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548801507352555748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ba9cd21af3c4f4c99a66676b30be3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fort: {fileID: 417417457}
+  barrel: {fileID: 4548801506649809435}
 --- !u!1 &4548801507459449310
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +647,7 @@ GameObject:
   - component: {fileID: 4548801507459449309}
   - component: {fileID: 4548801507459449306}
   - component: {fileID: 4548801507459449307}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FortMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +727,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143109754481123748}
   - component: {fileID: 1771270329434362737}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wheel_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
