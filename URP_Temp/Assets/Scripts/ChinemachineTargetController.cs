@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class ChinemachineTargetController : MonoBehaviour
 {
     [SerializeField] private Transform cinemachineTarget;
+    [SerializeField] private float minPitch = -45;
+    [SerializeField] private float maxPitch = 75;
 
     private Vector2 currentLookInput;
 
@@ -37,7 +39,7 @@ public class ChinemachineTargetController : MonoBehaviour
             targetPitch += currentLookInput.y * Time.deltaTime;
             targetYaw += currentLookInput.x * Time.deltaTime;
             // clamp our rotations so our values are limited 360 degrees
-            targetPitch = ClampAngle(targetPitch);
+            targetPitch = ClampPitch(ClampAngle(targetPitch));
             targetYaw = ClampAngle(targetYaw);
         }
         // Cinemachine will follow this target
@@ -49,6 +51,12 @@ public class ChinemachineTargetController : MonoBehaviour
     {
         angle %= 360;
         return angle;
+    }
+
+    private float ClampPitch(float pitch)
+    {
+        var result = Mathf.Clamp(pitch, minPitch, maxPitch);
+        return result;
     }
     
     private void ChangeCurserLockState(bool islock)
