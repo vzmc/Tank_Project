@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 344083809}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 417417457}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Fort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1695643183}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: ChinemachineTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8681117310606452052}
   - component: {fileID: 8169973831704339723}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Wheel_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4548801506346751378}
   - component: {fileID: 4548801506346751391}
   - component: {fileID: 4548801506346751376}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: BarrelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 4548801506601174251}
   - component: {fileID: 4548801506601174248}
   - component: {fileID: 4548801506601174249}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4548801506649809435}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 4548801507115349050}
   - component: {fileID: 4548801507115350983}
   - component: {fileID: 4548801507115349048}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 4548801507308368435}
   - component: {fileID: 4548801507308368436}
   - component: {fileID: 4548801507308368437}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ GameObject:
   - component: {fileID: 4548801506365293513}
   - component: {fileID: 2031668372}
   - component: {fileID: 4127482818140775092}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Tank
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -549,7 +549,7 @@ Rigidbody:
   m_AngularDrag: 5
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!65 &1529410340
@@ -563,8 +563,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.587331, y: 0.9567133, z: 2.0058103}
-  m_Center: {x: -0.00058972836, y: 0.32849437, z: -0.0010221004}
+  m_Size: {x: 1.587331, y: 0.40382135, z: 2.0058103}
+  m_Center: {x: -0.0005897283, y: 0.052048385, z: -0.0010221004}
 --- !u!114 &4635877526397537178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,16 +636,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ba9cd21af3c4f4c99a66676b30be3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signalPrefab: {fileID: 1090099279952108424, guid: 52055e68fa86e214e81f7692d3a3e424, type: 3}
-  linePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c, type: 3}
-  cannonBallPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
-  cannonTip: {fileID: 344083809}
+  landingPointPrefab: {fileID: 1090099279952108424, guid: 52055e68fa86e214e81f7692d3a3e424, type: 3}
+  fireLinePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c, type: 3}
+  shellPrefab: {fileID: 5466202, guid: 2cc6b087af03ae9439656e007758a78c, type: 3}
   fort: {fileID: 417417457}
   barrel: {fileID: 4548801506649809435}
-  angleSpeed: 20
+  barrelTip: {fileID: 344083809}
+  rayCastTarget:
+    serializedVersion: 2
+    m_Bits: 320
+  fortRotateSpeed: 25
+  barrelRotateSpeed: 30
   maxBarrelPitch: 10
-  minBarrelPitch: -30
-  cannonForece: 10
+  minBarrelPitch: -45
+  shellSpeed: 30
+  rayCastDistance: 500
 --- !u!1 &4548801507459449310
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +662,7 @@ GameObject:
   - component: {fileID: 4548801507459449309}
   - component: {fileID: 4548801507459449306}
   - component: {fileID: 4548801507459449307}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: FortMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -737,7 +742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143109754481123748}
   - component: {fileID: 1771270329434362737}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Wheel_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

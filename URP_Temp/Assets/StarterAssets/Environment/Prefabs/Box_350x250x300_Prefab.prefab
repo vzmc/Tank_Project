@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 4422386835124225496}
   - component: {fileID: 3620356314442491057}
   m_Layer: 0
-  m_Name: Box_350x300x250_Prefab
+  m_Name: Box_350x250x300_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 73
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3248315488105561783
 Transform:
@@ -68,7 +68,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

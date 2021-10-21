@@ -1,98 +1,115 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FortController : MonoBehaviour
 {
-    [SerializeField] private MeshRenderer signalPrefab;
-    [SerializeField] private LineRenderer linePrefab;
-    [SerializeField] private Rigidbody cannonBallPrefab;
-    [SerializeField] private Transform cannonTip;
+    [Header("Prefabs")]
+    [SerializeField] private MeshRenderer landingPointPrefab;
+    [SerializeField] private LineRenderer fireLinePrefab;
+    [SerializeField] private Rigidbody shellPrefab;
+    
     [SerializeField] private Transform fort;
     [SerializeField] private Transform barrel;
-    [SerializeField] private float angleSpeed;
-    [SerializeField] private float maxBarrelPitch;
-    [SerializeField] private float minBarrelPitch;
-    [SerializeField] private float cannonForece;
+    [SerializeField] private Transform barrelTip;
+
+    [SerializeField] private LayerMask rayCastTarget;
+    
+    [SerializeField] private float fortRotateSpeed = 25;
+    [SerializeField] private float barrelRotateSpeed = 30;
+    [SerializeField] private float maxBarrelPitch = 15;
+    [SerializeField] private float minBarrelPitch = -45;
+    [SerializeField] private float shellSpeed = 20;
+
+    [SerializeField] private float rayCastDistance = 500;
     
     private Transform cameraTransform;
-    private Vector3 targetAngles;
-
-    private bool hasTarget;
-
-    private MeshRenderer signal;
-    private LineRenderer line;
-
-    private Vector3 lineEnd;
+    private MeshRenderer landingPointRenderer;
+    private LineRenderer fireLineRenderer;
+    
+    private Vector3 rotateTargetAngles;
 
     private void Awake()
     {
         cameraTransform = Camera.main.transform;
 
-        signal = Instantiate(signalPrefab);
-        line = Instantiate(linePrefab);
+        landingPointRenderer = Instantiate(landingPointPrefab);
+        fireLineRenderer = Instantiate(fireLinePrefab);
     }
 
     private void Update()
     {
-        fort.localRotation = Quaternion.RotateTowards(fort.localRotation, Quaternion.Euler(0, targetAngles.y, 0), angleSpeed * Time.deltaTime);
-
-        var xAngle = targetAngles.x;
-        if (xAngle > 180)
-        {
-            xAngle -= 360;
-        }
-        xAngle = Mathf.Clamp(xAngle, minBarrelPitch, maxBarrelPitch);
-        barrel.localRotation = Quaternion.RotateTowards(barrel.localRotation, Quaternion.Euler(xAngle, 0, 0), angleSpeed * Time.deltaTime);
-        
-        signal.transform.position = lineEnd;
-        line.SetPosition(0, barrel.position);
-        line.SetPosition(1, lineEnd);
-        
-        Debug.Log($"xAngle = {xAngle}");
-        Debug.Log($"targetAngles = {targetAngles}");
+        fort.localRotation = Quaternion.RotateTowards(fort.localRotation, Quaternion.Euler(0, rotateTargetAngles.y, 0), fortRotateSpeed * Time.deltaTime);
+        barrel.localRotation = Quaternion.RotateTowards(barrel.localRotation, Quaternion.Euler(ClampBarrelPitch(rotateTargetAngles.x), 0, 0), barrelRotateSpeed * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        var targetPoint = Vector3.zero;
-        var startPoint = barrel.position;
-        
-        if (Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out var hitInfo))
+        // 砲台と砲管の回転角度計算
+        Vector3 aimPoint;
+        if (Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out var hitInfo, rayCastDistance, rayCastTarget))
         {
-            targetPoint = hitInfo.point;
+            aimPoint = hitInfo.point;
         }
         else
         {
-            targetPoint = cameraTransform.position + cameraTransform.forward * 1000;
+            aimPoint = cameraTransform.position + cameraTransform.forward * rayCastDistance;
         }
-
-        if (Physics.Raycast(new Ray(startPoint, barrel.forward), out var hit))
+        var worldAimDirection = (aimPoint - barrel.position).normalized;
+        var localAimDirection = transform.InverseTransformDirection(worldAimDirection);
+        rotateTargetAngles = Quaternion.FromToRotation(Vector3.forward, localAimDirection).eulerAngles;
+        Debug.DrawLine(barrel.position, aimPoint, Color.green);
+        
+        // 射線描く
+        Vector3 landingPoint;
+        if (Physics.Raycast(new Ray(barrelTip.position, barrelTip.forward), out var hit, rayCastDistance, rayCastTarget))
         {
-            lineEnd = hit.point;
+            landingPoint = hit.point;
         }
         else
         {
-            lineEnd = startPoint + barrel.forward * 1000;
+            landingPoint = barrelTip.position + barrelTip.forward * rayCastDistance;
         }
+        landingPointRenderer.transform.position = landingPoint;
+        fireLineRenderer.SetPosition(0, barrelTip.position);
+        fireLineRenderer.SetPosition(1, landingPoint);
 
-        var worldVector = (targetPoint - startPoint).normalized;
-        var localVector = transform.InverseTransformDirection(worldVector);
-        targetAngles = Quaternion.FromToRotation(Vector3.forward, localVector).eulerAngles;
-        
-        Debug.DrawLine(startPoint, hitInfo.point, Color.green);
+        if (Vector3.Distance(aimPoint, landingPoint) < 0.1)
+        {
+            var green = Color.green;
+            green.a = 0.5f;
+            landingPointRenderer.material.color = green;
+            fireLineRenderer.startColor = green;
+            fireLineRenderer.endColor = green;
+        }
+        else
+        {
+            var red = Color.red;
+            red.a = 0.5f;
+            landingPointRenderer.material.color = red;
+            fireLineRenderer.startColor = red;
+            fireLineRenderer.endColor = red;
+        }
     }
 
+    private float ClampBarrelPitch(float angle)
+    {
+        if (angle > 180)
+        {
+            angle -= 360;
+        }
+        angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
+
+        return angle;
+    }
+    
     private void OnFire(InputValue inputValue)
     {
         if (inputValue.isPressed)
         {
-            var ball = Instantiate(cannonBallPrefab, cannonTip.position, Quaternion.identity);
-            ball.AddForce(barrel.forward * cannonForece, ForceMode.VelocityChange);
-            Destroy(ball.gameObject, 5);
+            var shellRigidbody = Instantiate(shellPrefab, barrelTip.position, barrelTip.rotation);
+            shellRigidbody.AddForce(barrel.forward * shellSpeed, ForceMode.VelocityChange);
+            //Destroy(shellRigidbody.gameObject, 5);
         }
     }
 }
