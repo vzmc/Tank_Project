@@ -12,8 +12,8 @@ public class ChinemachineTargetController : MonoBehaviour
 
     private Vector2 currentLookInput;
 
-    private bool applicationFocused;
-    private bool isLookControlled = true;
+    private bool appFocused;
+    private bool isLookControlled;
     
     // cinemachine
     private float targetPitch;
@@ -24,6 +24,8 @@ public class ChinemachineTargetController : MonoBehaviour
         var eulerAngles = cinemachineTarget.rotation.eulerAngles;
         targetPitch = eulerAngles.x;
         targetYaw = eulerAngles.y;
+
+        ChangeLookControlState(true);
     }
 
     private void Update()
@@ -59,25 +61,27 @@ public class ChinemachineTargetController : MonoBehaviour
         return result;
     }
     
-    private void ChangeCurserLockState(bool islock)
+    private void ChangeLookControlState(bool isControlled)
     {
-        Cursor.lockState = islock ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = isControlled ? CursorLockMode.Locked : CursorLockMode.None;
+        isLookControlled = isControlled;
+        
+        Debug.Log($"LookControlled = {isControlled}");
     }
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        applicationFocused = hasFocus;
+        appFocused = hasFocus;
     }
 
     private void OnLook(InputValue inputValue)
     {
-        currentLookInput = applicationFocused && isLookControlled ? inputValue.Get<Vector2>() : Vector2.zero;
+        currentLookInput = appFocused && isLookControlled ? inputValue.Get<Vector2>() : Vector2.zero;
     }
 
     private void OnChangeLookControl(InputValue inputValue)
     {
-        Debug.Log(inputValue.isPressed ? "Button is pressed" : "Button is released");
-        isLookControlled = !inputValue.isPressed;
-        ChangeCurserLockState(isLookControlled);
+        //Debug.Log(inputValue.isPressed ? "Button is pressed" : "Button is released");
+        ChangeLookControlState(!inputValue.isPressed);
     }
 }

@@ -16,12 +16,12 @@ public class SciFiProjectileScript : MonoBehaviour
 
     void Start()
     {
-        projectileParticle = Instantiate(projectileParticle, transform.position, transform.rotation) as GameObject;
-        projectileParticle.transform.parent = transform;
+        projectileParticle = Instantiate(projectileParticle, transform);
         if (muzzleParticle)
         {
             muzzleParticle = Instantiate(muzzleParticle, transform.position, transform.rotation) as GameObject;
             muzzleParticle.transform.rotation = transform.rotation * Quaternion.Euler(180, 0, 0);
+            muzzleParticle.transform.localScale = transform.localScale;
             Destroy(muzzleParticle, 1.5f); // Lifetime of muzzle effect.
         }
     }
@@ -32,8 +32,9 @@ public class SciFiProjectileScript : MonoBehaviour
         {
             hasCollided = true;
             impactParticle = Instantiate(impactParticle, transform.position, Quaternion.FromToRotation(Vector3.up, impactNormal)) as GameObject;
- 
-            if (hit.gameObject.tag == "Destructible") // Projectile will destroy objects tagged as Destructible
+            impactParticle.transform.localScale = transform.localScale;
+            
+            if (hit.gameObject.CompareTag("Destructible")) // Projectile will destroy objects tagged as Destructible
             {
                 Destroy(hit.gameObject);
             }
@@ -44,7 +45,7 @@ public class SciFiProjectileScript : MonoBehaviour
                 curTrail.transform.parent = null;
                 Destroy(curTrail, 3f);
             }
-            Destroy(projectileParticle, 3f);
+            //Destroy(projectileParticle, 3f);
             Destroy(impactParticle, 5f);
             Destroy(gameObject);
 			
@@ -52,13 +53,12 @@ public class SciFiProjectileScript : MonoBehaviour
             //Component at [0] is that of the parent i.e. this object (if there is any)
             for (int i = 1; i < trails.Length; i++)
             {
-				
                 ParticleSystem trail = trails[i];
 				
 				if (trail.gameObject.name.Contains("Trail"))
 				{
-				trail.transform.SetParent(null);
-				Destroy(trail.gameObject, 2f);
+                    trail.transform.SetParent(null);
+                    Destroy(trail.gameObject, 2f);
 				}
             }
         }

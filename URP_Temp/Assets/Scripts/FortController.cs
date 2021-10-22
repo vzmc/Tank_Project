@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 
 public class FortController : MonoBehaviour
 {
-    [Header("Prefabs")]
     [SerializeField] private MeshRenderer landingPointPrefab;
     [SerializeField] private LineRenderer fireLinePrefab;
-    [SerializeField] private Rigidbody shellPrefab;
-    
+
     [SerializeField] private Transform fort;
     [SerializeField] private Transform barrel;
     [SerializeField] private Transform barrelTip;
@@ -19,7 +17,6 @@ public class FortController : MonoBehaviour
     [SerializeField] private float barrelRotateSpeed = 30;
     [SerializeField] private float maxBarrelPitch = 15;
     [SerializeField] private float minBarrelPitch = -45;
-    [SerializeField] private float shellSpeed = 20;
 
     [SerializeField] private float rayCastDistance = 500;
     
@@ -101,15 +98,5 @@ public class FortController : MonoBehaviour
         angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
 
         return angle;
-    }
-    
-    private void OnFire(InputValue inputValue)
-    {
-        if (inputValue.isPressed)
-        {
-            var shellRigidbody = Instantiate(shellPrefab, barrelTip.position, barrelTip.rotation);
-            shellRigidbody.AddForce(barrel.forward * shellSpeed, ForceMode.VelocityChange);
-            //Destroy(shellRigidbody.gameObject, 5);
-        }
     }
 }

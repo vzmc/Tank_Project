@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
+  - Destructible
   layers:
   - Default
   - TransparentFX
@@ -12,8 +13,8 @@ TagManager:
   - PostProcessing
   - Water
   - UI
-  - Tank
-  - Weapon
+  - Player
+  - Others
   - Stage
   - 
   - 
