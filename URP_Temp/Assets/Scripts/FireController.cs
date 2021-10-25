@@ -16,7 +16,7 @@ public class FireController : MonoBehaviour
             var shellRigidbody = Instantiate(shellPrefab, firePoint.position, firePoint.rotation);
             shellRigidbody.AddForce(firePoint.forward * shellSpeed, ForceMode.VelocityChange);
             shellRigidbody.gameObject.layer = gameObject.layer;
-            //Destroy(shellRigidbody.gameObject, 5);
+            Destroy(shellRigidbody.gameObject, 5);
         }
     }
 }

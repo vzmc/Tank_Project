@@ -6,21 +6,23 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
 public class TankMoveController : MonoBehaviour
 {
-    [SerializeField] private WheelCollider[] leftWheels;
-    [SerializeField] private WheelCollider[] rightWheels;
-    
+    [SerializeField] private Transform leftWheelsRoot;
+    [SerializeField] private Transform rightWheelsRoot;
+
     [SerializeField] private float motorTorue;
     [SerializeField] private float steerTorue;
     
-    private new Rigidbody rigidbody;
-    private Vector2 currentMoveInputValue;
+    private WheelCollider[] leftWheels;
+    private WheelCollider[] rightWheels;
     
+    private Vector2 currentMoveInputValue;
+
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        leftWheels = leftWheelsRoot.GetComponentsInChildren<WheelCollider>();
+        rightWheels = rightWheelsRoot.GetComponentsInChildren<WheelCollider>();
     }
 
     private void FixedUpdate()
@@ -43,9 +45,6 @@ public class TankMoveController : MonoBehaviour
         {
             wheel.motorTorque = rightMotorTorue;
         }
-
-        // rigidbody.AddForce(transform.forward * currentMoveInputValue.y * motorTorue, ForceMode.Acceleration);
-        // rigidbody.AddTorque(transform.up * currentMoveInputValue.x * steerTorue, ForceMode.Acceleration);
     }
 
     private void OnMove(InputValue inputValue)
