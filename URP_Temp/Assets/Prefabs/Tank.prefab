@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28501074}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.375, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4548801507115349050}
@@ -39,15 +39,15 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28501074}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.8
+  m_Radius: 0.5
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.15
-  m_ForceAppPointDistance: 0.8
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0.5
   m_Mass: 20
-  m_WheelDampingRate: 20
+  m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
@@ -116,7 +116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366239358}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.375, z: -0.25}
+  m_LocalPosition: {x: 0, y: 0.05, z: -0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 276216666118492568}
@@ -130,15 +130,15 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366239358}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.8
+  m_Radius: 0.5
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.15
-  m_ForceAppPointDistance: 0.8
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0.5
   m_Mass: 20
-  m_WheelDampingRate: 20
+  m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
@@ -209,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369680355}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.375, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 276216666118492568}
@@ -223,15 +223,15 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369680355}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.8
+  m_Radius: 0.5
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.15
-  m_ForceAppPointDistance: 0.8
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0.5
   m_Mass: 20
-  m_WheelDampingRate: 20
+  m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
@@ -300,7 +300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886414105}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.375, z: -0.25}
+  m_LocalPosition: {x: 0, y: 0.05, z: -0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4548801507115349050}
@@ -314,15 +314,15 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886414105}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.8
+  m_Radius: 0.5
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.15
-  m_ForceAppPointDistance: 0.8
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0.5
   m_Mass: 20
-  m_WheelDampingRate: 20
+  m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
@@ -850,6 +850,7 @@ GameObject:
   - component: {fileID: 4548801506365293513}
   - component: {fileID: 2031668372}
   - component: {fileID: 4127482818140775092}
+  - component: {fileID: 1691587428}
   - component: {fileID: 393126354}
   m_Layer: 6
   m_Name: Tank
@@ -934,10 +935,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9106dfd18ed8edb4caf208727eaad7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftWheelsRoot: {fileID: 276216666118492568}
-  rightWheelsRoot: {fileID: 4548801507115349050}
-  motorTorue: 400
-  steerTorue: 400
+  frontWheels:
+  - {fileID: 1369680357}
+  - {fileID: 28501076}
+  backWheels:
+  - {fileID: 366239360}
+  - {fileID: 1886414107}
+  maxMotorTorque: 200
+  maxSteerAngel: 25
+  maxBreakTorque: 150
 --- !u!114 &2031668372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -970,13 +976,32 @@ MonoBehaviour:
   fort: {fileID: 417417457}
   barrel: {fileID: 4548801506649809435}
   barrelTip: {fileID: 344083809}
+  fortRotateSpeed: 20
+  barrelRotateSpeed: 25
+  maxBarrelPitch: 10
+  minBarrelPitch: -45
+  rayCastDistance: 500
   rayCastTarget:
     serializedVersion: 2
     m_Bits: 384
-  fortRotateSpeed: 40
-  barrelRotateSpeed: 50
-  maxBarrelPitch: 10
-  minBarrelPitch: -45
+  aimMode: 0
+--- !u!114 &1691587428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548801507352555748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af7999775be6de4fbe129b3b2d398b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimPointPrefab: {fileID: 1090099279952108424, guid: b6718c583f70f4d42a294e044244f360, type: 3}
+  fortController: {fileID: 4127482818140775092}
+  rayCastLayerMask:
+    serializedVersion: 2
+    m_Bits: 384
   rayCastDistance: 500
 --- !u!114 &393126354
 MonoBehaviour:

@@ -1,54 +1,45 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TankMoveController : MonoBehaviour
 {
-    [SerializeField] private Transform leftWheelsRoot;
-    [SerializeField] private Transform rightWheelsRoot;
-
-    [SerializeField] private float motorTorue;
-    [SerializeField] private float steerTorue;
+    [SerializeField] private WheelCollider[] frontWheels;
+    [SerializeField] private WheelCollider[] backWheels;
     
-    private WheelCollider[] leftWheels;
-    private WheelCollider[] rightWheels;
+    [SerializeField] private float maxMotorTorque;
+    [SerializeField] private float maxSteerAngel;
+    [SerializeField] private float maxBreakTorque;
     
-    private Vector2 currentMoveInputValue;
-
-    private void Awake()
-    {
-        leftWheels = leftWheelsRoot.GetComponentsInChildren<WheelCollider>();
-        rightWheels = rightWheelsRoot.GetComponentsInChildren<WheelCollider>();
-    }
+    private float currentAccelerateInputValue;
+    private float currentTurnInputValue;
 
     private void FixedUpdate()
     {
-        var leftMotorTorue = motorTorue * currentMoveInputValue.y;
-        var rightMotorTorue = motorTorue * currentMoveInputValue.y;
-        
-        leftMotorTorue += steerTorue * currentMoveInputValue.x;
-        rightMotorTorue -= steerTorue * currentMoveInputValue.x;
+        var motorTorque = maxMotorTorque * currentAccelerateInputValue;
+        var steerAngel = maxSteerAngel * currentTurnInputValue;
+        var breakTorque = Mathf.Abs(currentAccelerateInputValue) <= float.Epsilon ? maxBreakTorque : 0;
 
-        leftMotorTorue = Mathf.Clamp(leftMotorTorue, -motorTorue, motorTorue);
-        rightMotorTorue = Mathf.Clamp(rightMotorTorue, -motorTorue, motorTorue);
-
-        foreach (var wheel in leftWheels)
+        foreach (var wheel in frontWheels)
         {
-            wheel.motorTorque = leftMotorTorue;
+            wheel.steerAngle = steerAngel;
+            wheel.motorTorque = motorTorque;
+            wheel.brakeTorque = breakTorque;
         }
         
-        foreach (var wheel in rightWheels)
+        foreach (var wheel in backWheels)
         {
-            wheel.motorTorque = rightMotorTorue;
+            wheel.motorTorque = motorTorque;
+            wheel.brakeTorque = breakTorque;
         }
     }
 
-    private void OnMove(InputValue inputValue)
+    private void OnAccelerate(InputValue inputValue)
     {
-        currentMoveInputValue = inputValue.Get<Vector2>();
+        currentAccelerateInputValue = inputValue.Get<float>();
+    }
+
+    private void OnTurn(InputValue inputValue)
+    {
+        currentTurnInputValue = inputValue.Get<float>();
     }
 }
