@@ -230,6 +230,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
+      propertyPath: fireImpulse
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
+      propertyPath: shellPrefab
+      value: 
+      objectReference: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
+    - target: {fileID: 4548801506365293513, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
+      propertyPath: maxBreakTorque
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4548801507352555747, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -511,35 +523,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1146260626 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2070925442191277755, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-  m_PrefabInstance: {fileID: 1601767274}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1146260628
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146260626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: {x: 0.5, y: 0.5, z: 0.5}
-  ShoulderOffset: {x: 1.2, y: 2, z: 0}
-  VerticalArmLength: 0
-  CameraSide: 0.5
-  CameraDistance: 5.5
-  CameraCollisionFilter:
-    serializedVersion: 2
-    m_Bits: 384
-  IgnoreTag: Player
-  CameraRadius: 0.2
-  DampingIntoCollision: 0.2
-  DampingFromCollision: 0.2
 --- !u!1 &1167629569
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,17 +724,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1601767276, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-      propertyPath: Damping.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601767276, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-      propertyPath: Damping.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601767276, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-      propertyPath: Damping.z
-      value: 1
+    - target: {fileID: 731416663, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
+      propertyPath: m_UseCameraSpace
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177671, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
       propertyPath: m_Name
@@ -805,12 +780,7 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 630142994}
-    - target: {fileID: 2070925441746177913, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-      propertyPath: m_Lens.m_SensorSize.x
-      value: 1.7777778
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1601767276, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
 --- !u!108 &708281535622325272
 Light:
