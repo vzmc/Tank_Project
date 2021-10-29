@@ -845,8 +845,8 @@ MonoBehaviour:
   - {fileID: 366239360}
   - {fileID: 1886414107}
   maxMotorTorque: 200
-  maxSteerAngel: 25
-  maxBreakTorque: 0
+  maxSteerAngel: 30
+  maxBreakTorque: 500
 --- !u!114 &2031668372
 MonoBehaviour:
   m_ObjectHideFlags: 0

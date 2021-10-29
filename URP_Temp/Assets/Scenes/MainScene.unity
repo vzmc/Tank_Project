@@ -230,18 +230,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: fireImpulse
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: shellPrefab
-      value: 
-      objectReference: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
-    - target: {fileID: 4548801506365293513, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: maxBreakTorque
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4548801507352555747, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
       propertyPath: m_RootOrder
       value: 6
