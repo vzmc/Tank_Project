@@ -6,9 +6,7 @@ using UnityEngine;
 public class AimController : MonoBehaviour
 {
     [SerializeField] private Renderer aimPointPrefab;
-
     [SerializeField] private FortController fortController;
-    
     [SerializeField] private LayerMask rayCastLayerMask;
     [SerializeField] private float rayCastDistance = 500;
     

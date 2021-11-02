@@ -14,6 +14,8 @@ public class FortController : MonoBehaviour
     [SerializeField] private MeshRenderer landingPointPrefab;
     [SerializeField] private LineRenderer fireLinePrefab;
 
+    [SerializeField] private FireController fireController;
+
     [SerializeField] private Transform fort;
     [SerializeField] private Transform barrel;
     [SerializeField] private Transform barrelTip;
@@ -124,7 +126,11 @@ public class FortController : MonoBehaviour
     private Vector3 CalcFireVector(Vector3 startPoint, Vector3 targetPoint, float fireSpeed)
     {
         Vector3 fireVector = Vector3.forward;
-        
+
+        Vector3 aimVector = targetPoint - startPoint;
+
+        float y = aimVector.y;
+        float x = Mathf.Sqrt(aimVector.x * aimVector.x + aimVector.z * aimVector.z);
         
         
         return fireVector;

@@ -11,6 +11,8 @@ public class FireController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireImpulse;
 
+    public float ShellSpeed => shellSpeed;
+
     private void OnFire(InputValue inputValue)
     {
         if (inputValue.isPressed)
