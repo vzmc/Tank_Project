@@ -876,6 +876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landingPointPrefab: {fileID: 1090099279952108424, guid: 52055e68fa86e214e81f7692d3a3e424, type: 3}
   fireLinePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c, type: 3}
+  fireController: {fileID: 393126354}
   fort: {fileID: 417417457}
   barrel: {fileID: 4548801506649809435}
   barrelTip: {fileID: 344083809}

@@ -10,6 +10,7 @@ public class FireController : MonoBehaviour
     [SerializeField] private float shellSpeed;
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireImpulse;
+    [SerializeField] private float destroyTime;
 
     public float ShellSpeed => shellSpeed;
 
@@ -21,7 +22,7 @@ public class FireController : MonoBehaviour
             shellRigidbody.GetComponent<CinemachineImpulseSource>().GenerateImpulse(firePoint.forward * fireImpulse);
             shellRigidbody.AddForce(firePoint.forward * shellSpeed, ForceMode.VelocityChange);
             shellRigidbody.gameObject.layer = gameObject.layer;
-            Destroy(shellRigidbody.gameObject, 5);
+            Destroy(shellRigidbody.gameObject, destroyTime);
         }
     }
 }

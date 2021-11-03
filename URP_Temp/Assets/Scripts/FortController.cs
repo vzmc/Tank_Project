@@ -36,19 +36,19 @@ public class FortController : MonoBehaviour
     private Vector3 localAimVector;
     private Vector3 rotateTargetAngles;
 
-    public void SetAimPoint(Vector3 worldPoint)
+    public void SetAimPoint(Vector3 aimWorldPoint)
     {
-        worldAimPoint = worldPoint;
+        worldAimPoint = aimWorldPoint;
         
         switch (aimMode)
         {
             case AimMode.Line:
-                var worldVector = worldPoint - barrel.position;
+                var worldVector = aimWorldPoint - barrel.position;
                 localAimVector = transform.InverseTransformDirection(worldVector.normalized);
                 break;
             case AimMode.Parabola:
-                // todo
-                localAimVector = Vector3.forward;
+                var fireVector = FireUtility.CalcFireVector(aimWorldPoint - barrel.position, Physics.gravity, fireController.ShellSpeed, true);
+                localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
         }
         
@@ -60,6 +60,7 @@ public class FortController : MonoBehaviour
         landingPointRenderer = Instantiate(landingPointPrefab);
         landingPointRenderer.enabled = false;
         fireLineRenderer = Instantiate(fireLinePrefab);
+        fireLineRenderer.enabled = false;
     }
 
     private void Update()
@@ -67,40 +68,40 @@ public class FortController : MonoBehaviour
         fort.localRotation = Quaternion.RotateTowards(fort.localRotation, Quaternion.Euler(0, rotateTargetAngles.y, 0), fortRotateSpeed * Time.deltaTime);
         barrel.localRotation = Quaternion.RotateTowards(barrel.localRotation, Quaternion.Euler(ClampBarrelPitch(rotateTargetAngles.x), 0, 0), barrelRotateSpeed * Time.deltaTime);
         
-        Debug.DrawLine(barrel.position, worldAimPoint, Color.green);
+        // Debug.DrawLine(barrel.position, worldAimPoint, Color.green);
+        //
+        // // 射線描く
+        // Vector3 landingPoint;
+        // if (Physics.Raycast(new Ray(barrelTip.position, barrelTip.forward), out var hitInfo, rayCastDistance, rayCastTarget))
+        // {
+        //     landingPoint = hitInfo.point;
+        //     landingPointRenderer.enabled = true;
+        //     landingPointRenderer.transform.position = landingPoint;
+        // }
+        // else
+        // {
+        //     landingPoint = barrelTip.position + barrelTip.forward * rayCastDistance;
+        //     landingPointRenderer.enabled = false;
+        // }
         
-        // 射線描く
-        Vector3 landingPoint;
-        if (Physics.Raycast(new Ray(barrelTip.position, barrelTip.forward), out var hitInfo, rayCastDistance, rayCastTarget))
-        {
-            landingPoint = hitInfo.point;
-            landingPointRenderer.enabled = true;
-            landingPointRenderer.transform.position = landingPoint;
-        }
-        else
-        {
-            landingPoint = barrelTip.position + barrelTip.forward * rayCastDistance;
-            landingPointRenderer.enabled = false;
-        }
-        
-        DrawFireLine(barrelTip.position, landingPoint);
+        //DrawFireLine(barrelTip.position, landingPoint);
 
-        if (Vector3.Distance(worldAimPoint, landingPoint) < 0.2f)
-        {
-            var green = Color.green;
-            green.a = 0.5f;
-            landingPointRenderer.material.color = green;
-            fireLineRenderer.startColor = green;
-            fireLineRenderer.endColor = green;
-        }
-        else
-        {
-            var red = Color.red;
-            red.a = 0.5f;
-            landingPointRenderer.material.color = red;
-            fireLineRenderer.startColor = red;
-            fireLineRenderer.endColor = red;
-        }
+        // if (Vector3.Distance(worldAimPoint, landingPoint) < 0.2f)
+        // {
+        //     var green = Color.green;
+        //     green.a = 0.5f;
+        //     landingPointRenderer.material.color = green;
+        //     fireLineRenderer.startColor = green;
+        //     fireLineRenderer.endColor = green;
+        // }
+        // else
+        // {
+        //     var red = Color.red;
+        //     red.a = 0.5f;
+        //     landingPointRenderer.material.color = red;
+        //     fireLineRenderer.startColor = red;
+        //     fireLineRenderer.endColor = red;
+        // }
     }
 
     private void FixedUpdate()
@@ -119,20 +120,7 @@ public class FortController : MonoBehaviour
         {
             angle -= 360;
         }
-        angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
+        //angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
         return angle;
-    }
-
-    private Vector3 CalcFireVector(Vector3 startPoint, Vector3 targetPoint, float fireSpeed)
-    {
-        Vector3 fireVector = Vector3.forward;
-
-        Vector3 aimVector = targetPoint - startPoint;
-
-        float y = aimVector.y;
-        float x = Mathf.Sqrt(aimVector.x * aimVector.x + aimVector.z * aimVector.z);
-        
-        
-        return fireVector;
     }
 }
