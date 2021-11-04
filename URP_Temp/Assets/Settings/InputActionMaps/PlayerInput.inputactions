@@ -46,6 +46,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Brake",
+                    "type": "Value",
+                    "id": "4b0a9075-41ff-4a50-b09d-67110b31d26a",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Turn",
                     "type": "Value",
                     "id": "4921d8b1-a6c0-4b0f-9412-e095c8b5c030",
@@ -349,6 +357,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Space",
+                    "id": "9bddd6bd-4fc5-455c-a6ab-f5cf610bceaf",
+                    "path": "1DAxis(minValue=0,whichSideWins=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "cf8eee00-0a68-4889-9367-0990b2bf16d4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

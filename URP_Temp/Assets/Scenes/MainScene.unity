@@ -230,18 +230,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: shellSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 393126354, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: destroyTime
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4127482818140775092, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
-      propertyPath: aimMode
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4548801507352555747, guid: 0f7ad240e0673e14798dd1a863a70270, type: 3}
       propertyPath: m_RootOrder
       value: 6

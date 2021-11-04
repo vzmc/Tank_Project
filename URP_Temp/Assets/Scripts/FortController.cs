@@ -43,13 +43,19 @@ public class FortController : MonoBehaviour
         switch (aimMode)
         {
             case AimMode.Line:
-                var worldVector = aimWorldPoint - barrel.position;
-                localAimVector = transform.InverseTransformDirection(worldVector.normalized);
-                break;
-            case AimMode.Parabola:
-                var fireVector = FireUtility.CalcFireVector(aimWorldPoint - barrel.position, Physics.gravity, fireController.ShellSpeed, true);
+            {
+                var fireVector = aimWorldPoint - barrel.position;
                 localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
+            }
+            case AimMode.Parabola:
+            {
+                var distanceVector = aimWorldPoint - barrel.position;
+                var fortLength = (barrelTip.position - barrel.position).magnitude;
+                var fireVector = FireUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                localAimVector = transform.InverseTransformDirection(fireVector.normalized);
+                break;
+            }
         }
         
         rotateTargetAngles = Quaternion.FromToRotation(Vector3.forward, localAimVector).eulerAngles;
@@ -106,6 +112,7 @@ public class FortController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // todo:
     }
 
     private void DrawFireLine(params Vector3[] points)
@@ -120,7 +127,7 @@ public class FortController : MonoBehaviour
         {
             angle -= 360;
         }
-        //angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
+        angle = Mathf.Clamp(angle, minBarrelPitch, maxBarrelPitch);
         return angle;
     }
 }

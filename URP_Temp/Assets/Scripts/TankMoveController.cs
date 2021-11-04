@@ -11,6 +11,7 @@ public class TankMoveController : MonoBehaviour
     [SerializeField] private float maxBreakTorque;
     
     private float currentAccelerateInputValue;
+    private float currentBrakeInputValue;
     private float currentTurnInputValue;
 
     private void FixedUpdate()
@@ -33,13 +34,21 @@ public class TankMoveController : MonoBehaviour
         var motorTorque = currentAccelerateInputValue * wheel.rpm >= 0 ? maxMotorTorque * currentAccelerateInputValue : 0;
         wheel.motorTorque = motorTorque;
         
-        var breakTorque = currentAccelerateInputValue * wheel.rpm < -float.Epsilon ? maxBreakTorque * Mathf.Abs(currentAccelerateInputValue) : 0;
-        wheel.brakeTorque = breakTorque;
+        var brakeTorque_1 = currentAccelerateInputValue * wheel.rpm < -float.Epsilon ? maxBreakTorque * Mathf.Abs(currentAccelerateInputValue) : 0;
+        var brakeTorque_2 = currentBrakeInputValue * maxBreakTorque;
+        var brakeTorque = Mathf.Max(brakeTorque_1, brakeTorque_2);
+        
+        wheel.brakeTorque = brakeTorque;
     }
 
     private void OnAccelerate(InputValue inputValue)
     {
         currentAccelerateInputValue = inputValue.Get<float>();
+    }
+
+    private void OnBrake(InputValue inputValue)
+    {
+        currentBrakeInputValue = inputValue.Get<float>();
     }
 
     private void OnTurn(InputValue inputValue)

@@ -888,7 +888,7 @@ MonoBehaviour:
   rayCastTarget:
     serializedVersion: 2
     m_Bits: 384
-  aimMode: 0
+  aimMode: 1
 --- !u!114 &1691587428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,9 +920,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
-  shellSpeed: 50
+  shellSpeed: 20
   firePoint: {fileID: 344083809}
   fireImpulse: 0.3
+  destroyTime: 10
 --- !u!1 &4548801507459449310
 GameObject:
   m_ObjectHideFlags: 0
