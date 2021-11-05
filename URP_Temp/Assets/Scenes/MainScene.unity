@@ -712,10 +712,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 731416663, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
-      propertyPath: m_UseCameraSpace
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177671, guid: 0bada2542a99f02438d35b18436d46e9, type: 3}
       propertyPath: m_Name
       value: PlayerFollowCamera
