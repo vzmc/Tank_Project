@@ -38,6 +38,11 @@ public class FortController : MonoBehaviour
 
     public void SetAimPoint(Vector3 aimWorldPoint)
     {
+        if (Math.Abs(worldAimPoint.sqrMagnitude - aimWorldPoint.sqrMagnitude) <= float.Epsilon)
+        {
+            return;
+        }
+        
         worldAimPoint = aimWorldPoint;
         
         switch (aimMode)
@@ -52,7 +57,8 @@ public class FortController : MonoBehaviour
             {
                 var distanceVector = aimWorldPoint - barrel.position;
                 var fortLength = (barrelTip.position - barrel.position).magnitude;
-                var fireVector = FireUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                Debug.Log($"fortLength = {fortLength}");
+                var fireVector = FireUtility.CalcFireDirection(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
                 localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
             }
