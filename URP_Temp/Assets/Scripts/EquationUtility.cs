@@ -1,29 +1,29 @@
 using System;
-using Unity.Mathematics;
-using UnityEngine;
+using System.Linq;
 
 public static class EquationUtility
 {
-    public static (double?, double?) CalcQuadraticEquation(double a, double b, double c)
+    public static double?[] CalcQuadraticEquation(double a, double b, double c)
     {
         if (a == 0)
         {
-            return (null, null);
+            return new double?[] {null, null};
         }
 
         var delta = b * b - 4 * a * c;
         if (delta < 0)
         {
-            return (null, null);
+            return new double?[] {null, null};;
         }
+
+        var rootDelta = Math.Sqrt(delta);
+        var x1 = (-b - rootDelta) / (2 * a);
+        var x2 = (-b + rootDelta) / (2 * a);
         
-        var x1 = (-b - Math.Sqrt(delta)) / (2 * a);
-        var x2 = (-b + Math.Sqrt(delta)) / (2 * a);
-        
-        return (x1, x2);
+        return new double?[] {x1, x2};
     }
 
-    public static (double?, double?, double?) CalcCubicEquation(double a, double b, double c, double d)
+    public static double?[] CalcCubicEquation(double a, double b, double c, double d)
     {
         var A = b * b - 3 * a * c;
         var B = b * c - 9 * a * d;
@@ -33,13 +33,14 @@ public static class EquationUtility
         if (A == 0 && B == 0)
         {
             var x = -c / b;
-            return (x, x, x);
+            return new double?[] {x, x, x};
         }
 
         if (delta > 0)
         {
-            var y1 = A * b + 3 * a * ((-B + Math.Sqrt(delta)) / 2);
-            var y2 = A * b + 3 * a * ((-B - Math.Sqrt(delta)) / 2);
+            var rootDelta = Math.Sqrt(delta);
+            var y1 = A * b + 3 * a * ((-B + rootDelta) / 2);
+            var y2 = A * b + 3 * a * ((-B - rootDelta) / 2);
 
             var oneThird = 1.0 / 3;
             var x1 = (-b - (Math.Pow(y1, oneThird) + Math.Pow(y2, oneThird))) / (3 * a);
@@ -52,7 +53,7 @@ public static class EquationUtility
                 x3 = x2;
             }
 
-            return (x1, x2, x3);
+            return new double?[] {x1, x2, x3};
         }
 
         if (delta == 0 && A != 0)
@@ -62,27 +63,30 @@ public static class EquationUtility
             var x2 = -k / 2;
             var x3 = x2;
 
-            return (x1, x2, x3);
+            return new double?[] {x1, x2, x3};
         }
 
         if (delta < 0 && A > 0)
         {
-            var t = (2 * A * b - 3 * a * B) / (2 * A * Math.Sqrt(A));
+            var rootA = Math.Sqrt(A);
+            var t = (2 * A * b - 3 * a * B) / (2 * A * rootA);
             var theta = Math.Acos(t);
             var thetaD3 = theta / 3;
+            var cosThetaD3 = Math.Cos(thetaD3);
+            var sinThetaD3 = Math.Sin(thetaD3);
             var root3 = Math.Sqrt(3);
 
-            var x1 = (-b - 2 * Math.Sqrt(A) * Math.Cos(thetaD3)) / (3 * a);
-            var x2 = (-b + Math.Sqrt(A) * (Math.Cos(thetaD3) + root3 * Math.Sin(thetaD3))) / (3 * a);
-            var x3 = (-b + Math.Sqrt(A) * (Math.Cos(thetaD3) - root3 * Math.Sin(thetaD3))) / (3 * a);
+            var x1 = (-b - 2 * rootA * cosThetaD3) / (3 * a);
+            var x2 = (-b + rootA * (cosThetaD3 + root3 * sinThetaD3)) / (3 * a);
+            var x3 = (-b + rootA * (cosThetaD3 - root3 * sinThetaD3)) / (3 * a);
             
-            return (x1, x2, x3);
+            return new double?[] {x1, x2, x3};
         }
         
-        return (null, null, null);
+        return new double?[] {null, null, null};
     }
 
-    public static (double?, double?, double?, double?) CalcQuarticEquation_SP(double a4, double a2, double a1, double a0)
+    public static double?[] CalcQuarticEquation_SP(double a4, double a2, double a1, double a0)
     {
         var p = a2 / a4;
         var q = a1 / a4;
@@ -93,39 +97,28 @@ public static class EquationUtility
         var c = p * p - 4 * r;
         var d = -q * q;
 
-        var us = CalcCubicEquation(a, b, c, d);
-        // Debug.Log($"u1 = {us.Item1}, u2 = {us.Item2}, u3 = {us.Item3}");
+        var uArray = CalcCubicEquation(a, b, c, d);
+        var ut = uArray.FirstOrDefault(x => x > 0);
+        if (!ut.HasValue)
+        {
+            return new double?[] {null, null, null, null};
+        }
 
-        var u = 0.0;
-        if (us.Item1.HasValue && us.Item1.Value > 0)
-        {
-            u = us.Item1.Value;
-        }
-        else if (us.Item2.HasValue && us.Item2.Value > 0)
-        {
-            u = us.Item2.Value;
-        }
-        else if (us.Item3.HasValue && us.Item3.Value > 0)
-        {
-            u = us.Item3.Value;
-        }
-        else
-        {
-            return (null, null, null, null);
-        }
+        var u = ut.Value;
+        var rootU = Math.Sqrt(u);
 
         var a_1 = 1;
-        var b_1 = Math.Sqrt(u);
-        var c_1 = (p + u) / 2 - (Math.Sqrt(u) * q) / (2 * u);
+        var b_1 = rootU;
+        var c_1 = (p + u) / 2 - (rootU * q) / (2 * u);
 
         var x12 = CalcQuadraticEquation(a_1, b_1, c_1);
         
         var a_2 = 1;
-        var b_2 = -Math.Sqrt(u);
-        var c_2 = (p + u) / 2 + (Math.Sqrt(u) * q) / (2 * u);
+        var b_2 = -rootU;
+        var c_2 = (p + u) / 2 + (rootU * q) / (2 * u);
         
         var x34 = CalcQuadraticEquation(a_2, b_2, c_2);
         
-        return (x12.Item1, x12.Item2, x34.Item1, x34.Item2);
+        return new double?[] {x12[0], x12[1], x34[0], x34[1]};
     }
 }

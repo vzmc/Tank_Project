@@ -25,7 +25,7 @@ public class FortController : MonoBehaviour
     [SerializeField] private float maxBarrelPitch = 15;
     [SerializeField] private float minBarrelPitch = -45;
 
-    [SerializeField] private float rayCastDistance = 500;
+    //[SerializeField] private float rayCastDistance = 500;
     [SerializeField] private LayerMask rayCastTarget;
     [SerializeField] private AimMode aimMode;
     
@@ -38,12 +38,12 @@ public class FortController : MonoBehaviour
 
     public void SetAimPoint(Vector3 aimWorldPoint)
     {
-        if (Math.Abs(worldAimPoint.sqrMagnitude - aimWorldPoint.sqrMagnitude) <= float.Epsilon)
+        if (Math.Abs(worldAimPoint.x - aimWorldPoint.x) <= float.Epsilon &&
+            Math.Abs(worldAimPoint.y - aimWorldPoint.y) <= float.Epsilon &&
+            Math.Abs(worldAimPoint.z - aimWorldPoint.z) <= float.Epsilon)
         {
             return;
         }
-        
-        worldAimPoint = aimWorldPoint;
         
         switch (aimMode)
         {
@@ -58,12 +58,13 @@ public class FortController : MonoBehaviour
                 var distanceVector = aimWorldPoint - barrel.position;
                 var fortLength = (barrelTip.position - barrel.position).magnitude;
                 Debug.Log($"fortLength = {fortLength}");
-                var fireVector = FireUtility.CalcFireDirection(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                var fireVector = FireUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
                 localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
             }
         }
         
+        worldAimPoint = aimWorldPoint;
         rotateTargetAngles = Quaternion.FromToRotation(Vector3.forward, localAimVector).eulerAngles;
     }
 
