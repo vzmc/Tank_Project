@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utility;
 
 public class FortController : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class FortController : MonoBehaviour
                 var distanceVector = aimWorldPoint - barrel.position;
                 var fortLength = (barrelTip.position - barrel.position).magnitude;
                 Debug.Log($"fortLength = {fortLength}");
-                var fireVector = FireUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                var fireVector = CalcFireVectorUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
                 localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
             }
