@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 879211431225237171}
   - component: {fileID: 6899942287235444479}
   - component: {fileID: -4219516621918709376}
-  - component: {fileID: -4122471744003126701}
+  - component: {fileID: -3608734142084442394}
   m_Layer: 0
   m_Name: Shell
   m_TagString: Untagged
@@ -221,7 +221,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.2
   m_Autodestruct: 1
   m_Emitting: 1
---- !u!114 &-4122471744003126701
+--- !u!114 &-3608734142084442394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,31 +235,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ImpulseDefinition:
     m_ImpulseChannel: 1
-    m_ImpulseShape: 1
+    m_ImpulseShape: 0
     m_CustomImpulseShape:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
+        inSlope: 19.996157
+        outSlope: 19.996157
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.07533142
+      - serializedVersion: 3
+        time: 0.1
+        value: 1
         inSlope: 0
-        outSlope: 31.801767
-        tangentMode: 65
+        outSlope: 0
+        tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.04342413
-        value: 1.380964
-        inSlope: 31.801767
-        outSlope: 3.4016905
-        tangentMode: 5
-        weightedMode: 0
-        inWeight: 0.32434794
-        outWeight: 0.1085405
-      - serializedVersion: 3
         time: 1
-        value: 0.9976425
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -300,4 +300,4 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+  m_DefaultVelocity: {x: 0, y: 0, z: 1}
