@@ -32,20 +32,12 @@ public class FortController : MonoBehaviour
     
     private MeshRenderer landingPointRenderer;
     private LineRenderer fireLineRenderer;
-
-    private Vector3 worldAimPoint;
+    
     private Vector3 localAimVector;
     private Vector3 rotateTargetAngles;
 
     public void SetAimPoint(Vector3 aimWorldPoint)
     {
-        if (Math.Abs(worldAimPoint.x - aimWorldPoint.x) <= float.Epsilon &&
-            Math.Abs(worldAimPoint.y - aimWorldPoint.y) <= float.Epsilon &&
-            Math.Abs(worldAimPoint.z - aimWorldPoint.z) <= float.Epsilon)
-        {
-            return;
-        }
-        
         switch (aimMode)
         {
             case AimMode.Line:
@@ -65,7 +57,6 @@ public class FortController : MonoBehaviour
             }
         }
         
-        worldAimPoint = aimWorldPoint;
         rotateTargetAngles = Quaternion.FromToRotation(Vector3.forward, localAimVector).eulerAngles;
     }
 
