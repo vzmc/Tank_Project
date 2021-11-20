@@ -32,6 +32,8 @@ public class FortController : MonoBehaviour
     
     private MeshRenderer landingPointRenderer;
     private LineRenderer fireLineRenderer;
+
+    private float fortLength;
     
     private Vector3 localAimVector;
     private Vector3 rotateTargetAngles;
@@ -49,8 +51,6 @@ public class FortController : MonoBehaviour
             case AimMode.Parabola:
             {
                 var distanceVector = aimWorldPoint - barrel.position;
-                var fortLength = (barrelTip.position - barrel.position).magnitude;
-                Debug.Log($"fortLength = {fortLength}");
                 var fireVector = CalcFireVectorUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
                 localAimVector = transform.InverseTransformDirection(fireVector.normalized);
                 break;
@@ -66,13 +66,17 @@ public class FortController : MonoBehaviour
         landingPointRenderer.enabled = false;
         fireLineRenderer = Instantiate(fireLinePrefab);
         fireLineRenderer.enabled = false;
+        
+        fortLength = (barrelTip.position - barrel.position).magnitude;
+        Debug.Log($"fortLength = {fortLength}");
     }
 
     private void Update()
     {
         fort.localRotation = Quaternion.RotateTowards(fort.localRotation, Quaternion.Euler(0, rotateTargetAngles.y, 0), fortRotateSpeed * Time.deltaTime);
         barrel.localRotation = Quaternion.RotateTowards(barrel.localRotation, Quaternion.Euler(ClampBarrelPitch(rotateTargetAngles.x), 0, 0), barrelRotateSpeed * Time.deltaTime);
-        
+
+        DrawProjectionCurve();
         // Debug.DrawLine(barrel.position, worldAimPoint, Color.green);
         //
         // // 射線描く
@@ -88,7 +92,7 @@ public class FortController : MonoBehaviour
         //     landingPoint = barrelTip.position + barrelTip.forward * rayCastDistance;
         //     landingPointRenderer.enabled = false;
         // }
-        
+
         //DrawFireLine(barrelTip.position, landingPoint);
 
         // if (Vector3.Distance(worldAimPoint, landingPoint) < 0.2f)
@@ -114,8 +118,26 @@ public class FortController : MonoBehaviour
         // todo:
     }
 
+    private void DrawProjectionCurve()
+    {
+        var startPosition = barrelTip.position;
+        var startVelocity = barrelTip.forward * fireController.ShellSpeed;
+        var timeDelta = 0.1f;
+        
+        var posList = new List<Vector3>();
+        var t = 0f;
+        for (int i = 0; i < 20; i++)
+        {
+            posList.Add(CalcFireVectorUtility.CalcPosition(startPosition, startVelocity, Physics.gravity, t));
+            t += timeDelta;
+        }
+        
+        DrawFireLine(posList.ToArray());
+    }
+    
     private void DrawFireLine(params Vector3[] points)
     {
+        fireLineRenderer.enabled = true;
         fireLineRenderer.positionCount = points.Length;
         fireLineRenderer.SetPositions(points);
     }

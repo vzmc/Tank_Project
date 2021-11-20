@@ -90,5 +90,16 @@ namespace Utility
 
             return fireVector;
         }
+
+        public static Vector3 CalcPosition(Vector3 startPosition, Vector3 startVelocity, Vector3 accelerationVector, float time)
+        {
+            var func = new Func<float, float, float, float, float>((s, v, a, t) => s + v * t + 0.5f * a * t * t);
+            
+            var x = func(startPosition.x, startVelocity.x, accelerationVector.x, time);
+            var y = func(startPosition.y, startVelocity.y, accelerationVector.y, time);
+            var z = func(startPosition.z, startVelocity.z, accelerationVector.z, time);
+            
+            return new Vector3(x, y, z);
+        }
     }
 }

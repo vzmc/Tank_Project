@@ -19,7 +19,7 @@ public class FireController : MonoBehaviour
         if (inputValue.isPressed)
         {
             var shellRigidbody = Instantiate(shellPrefab, firePoint.position, firePoint.rotation);
-            shellRigidbody.GetComponent<CinemachineImpulseSource>().GenerateImpulse(firePoint.forward * fireImpulse);
+            shellRigidbody.GetComponent<CinemachineImpulseSource>()?.GenerateImpulse(firePoint.forward * fireImpulse);
             shellRigidbody.AddForce(firePoint.forward * shellSpeed, ForceMode.VelocityChange);
             shellRigidbody.gameObject.layer = gameObject.layer;
             Destroy(shellRigidbody.gameObject, destroyTime);

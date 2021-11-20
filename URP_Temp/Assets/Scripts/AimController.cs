@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AimController : MonoBehaviour
@@ -8,7 +5,7 @@ public class AimController : MonoBehaviour
     [SerializeField] private Renderer aimPointPrefab;
     [SerializeField] private FortController fortController;
     [SerializeField] private LayerMask rayCastLayerMask;
-    [SerializeField] private float rayCastDistance = 500;
+    [SerializeField] private float rayCastDistance;
     
     private Transform cameraTransform;
     private Renderer aimPointRenderer;
