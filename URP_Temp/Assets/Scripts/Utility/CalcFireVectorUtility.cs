@@ -1,15 +1,25 @@
 using System;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace Utility
 {
     /// <summary>
-    /// 放物線砲弾発射方向ベクトルを求める
+    /// 放物線砲弾発射方向計算ユーティリティ
     /// </summary>
     public static class CalcFireVectorUtility
     {
-        public static Vector3 CalcFireVector(Vector3 distanceVector, Vector3 accelerationVector, float fireSpeed, bool useMinTime = true)
+        /// <summary>
+        /// 砲身長さ考慮しない関数
+        /// </summary>
+        /// <param name="fireVector"></param>
+        /// <param name="distanceVector"></param>
+        /// <param name="accelerationVector"></param>
+        /// <param name="fireSpeed"></param>
+        /// <param name="useMinTime"></param>
+        /// <returns></returns>
+        public static bool CalcFireVector(ref Vector3 fireVector, Vector3 distanceVector, Vector3 accelerationVector, float fireSpeed, bool useMinTime = true)
         {
             var v = fireSpeed;
 
@@ -29,28 +39,38 @@ namespace Utility
             if (!resultList.Any(tt => tt > 0))
             {
                 Debug.LogWarning("Out of range!");
-                return Vector3.zero;
+                return false;
             }
 
             var tArray = resultList.Where(tt => tt > 0).Select(Math.Sqrt).ToArray();
             var t = useMinTime ? tArray.Min() : tArray.Max();
             Debug.Log($"Result t = {t}");
 
-            var vx = x / t - ax * t / 2;
-            var vy = y / t - ay * t / 2;
-            var vz = z / t - az * t / 2;
+            var vx = x / t - 0.5 * ax * t;
+            var vy = y / t - 0.5 * ay * t;
+            var vz = z / t - 0.5 * az * t;
         
-            var fireVector = new Vector3((float)vx, (float)vy, (float)vz);
+            fireVector.Set((float)vx, (float)vy, (float)vz);
             Debug.Log($"FireVector = {fireVector}");
 
-            return fireVector;
+            return true;
         }
-    
-        public static Vector3 CalcFireVector(Vector3 distanceVector, Vector3 accelerationVector, float fortLength, float shellSpeed, bool useMinTime = true)
+
+        /// <summary>
+        /// 砲身長さ考慮する関数
+        /// </summary>
+        /// <param name="fireVector"></param>
+        /// <param name="distanceVector"></param>
+        /// <param name="accelerationVector"></param>
+        /// <param name="fortLength"></param>
+        /// <param name="shellSpeed"></param>
+        /// <param name="useMinTime"></param>
+        /// <returns></returns>
+        public static bool CalcFireVector(ref Vector3 fireVector, Vector3 distanceVector, Vector3 accelerationVector, float fortLength, float shellSpeed, bool useMinTime = true)
         {
-            if (fortLength == 0)
+            if (Mathf.Abs(fortLength) <= float.Epsilon)
             {
-                return CalcFireVector(distanceVector, accelerationVector, shellSpeed, useMinTime);
+                return CalcFireVector(ref fireVector, distanceVector, accelerationVector, shellSpeed, useMinTime);
             }
             
             var v = shellSpeed;
@@ -71,35 +91,27 @@ namespace Utility
             Debug.Log($"a4 = {a4}, a2 = {a2}, a1 = {a1}, a0 = {a0}");
 
             var resultList = CalcEquationUtility.CalcQuarticEquation(a4, 0, a2, a1, a0);
+            var str = new StringBuilder();
+            resultList.ForEach(t => str.Append($"{t}, "));
+            Debug.Log($"resultList = {str}");
             if (!resultList.Any(t => t > 0))
             {
                 Debug.LogWarning("Out of range!");
-                return Vector3.zero;
+                return false;
             }
 
             var tArray = resultList.Where(t => t > 0).ToArray();
             var t = useMinTime ? tArray.Min() : tArray.Max();
             Debug.Log($"t = {t}");
 
-            var vx = (x - ax * t * t / 2) / (t + l / v);
-            var vy = (y - ay * t * t / 2) / (t + l / v);
-            var vz = (z - az * t * t / 2) / (t + l / v);
+            var vx = (x - 0.5 * ax * t * t) / (t + l / v);
+            var vy = (y - 0.5 * ay * t * t) / (t + l / v);
+            var vz = (z - 0.5 * az * t * t) / (t + l / v);
 
-            var fireVector = new Vector3((float)vx, (float)vy, (float)vz);
+            fireVector.Set((float)vx, (float)vy, (float)vz);
             Debug.Log($"FireVector = {fireVector}");
 
-            return fireVector;
-        }
-
-        public static Vector3 CalcPosition(Vector3 startPosition, Vector3 startVelocity, Vector3 accelerationVector, float time)
-        {
-            var func = new Func<float, float, float, float, float>((s, v, a, t) => s + v * t + 0.5f * a * t * t);
-            
-            var x = func(startPosition.x, startVelocity.x, accelerationVector.x, time);
-            var y = func(startPosition.y, startVelocity.y, accelerationVector.y, time);
-            var z = func(startPosition.z, startVelocity.z, accelerationVector.z, time);
-            
-            return new Vector3(x, y, z);
+            return true;
         }
     }
 }

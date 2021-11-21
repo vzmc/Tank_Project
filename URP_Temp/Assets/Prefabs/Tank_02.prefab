@@ -582,6 +582,8 @@ GameObject:
   - component: {fileID: 3054164391815303228}
   - component: {fileID: 1379598558982889964}
   - component: {fileID: 1379598557147681626}
+  - component: {fileID: 4552720760708631534}
+  - component: {fileID: 1255494847}
   m_Layer: 6
   m_Name: Tank_02
   m_TagString: Player
@@ -667,7 +669,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: GamePlay
+  m_DefaultActionMap: b536f616-c954-43fb-a3bd-460f2c891c97
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1379598558652251676
@@ -729,9 +731,6 @@ MonoBehaviour:
   barrelRotateSpeed: 25
   maxBarrelPitch: 10
   minBarrelPitch: -45
-  rayCastTarget:
-    serializedVersion: 2
-    m_Bits: 384
   aimMode: 1
 --- !u!114 &1379598558982889964
 MonoBehaviour:
@@ -747,10 +746,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimPointPrefab: {fileID: 1090099279952108424, guid: b6718c583f70f4d42a294e044244f360, type: 3}
   fortController: {fileID: 3054164391815303228}
-  rayCastLayerMask:
+  checkLayers:
     serializedVersion: 2
     m_Bits: 384
-  rayCastDistance: 500
+  maxDistance: 500
 --- !u!114 &1379598557147681626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,11 +762,121 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7277a4ef3caa24b468b873d9ea35fa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
-  shellSpeed: 20
+  lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
+  parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee, type: 3}
+  shellSpeed: 30
+  shellLifeTime: 10
   firePoint: {fileID: 1379598557098622953}
-  fireImpulse: 0.2
-  destroyTime: 10
+  impulseStrength: 0.2
+  impulseSource: {fileID: 1255494847}
+  landingPointPrefab: {fileID: -1827118497690332346, guid: 52055e68fa86e214e81f7692d3a3e424, type: 3}
+  checkTimeStep: 0.02
+  checkRadius: 0.15
+  checkLayers:
+    serializedVersion: 2
+    m_Bits: 384
+--- !u!114 &4552720760708631534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172160636742386284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732ac27cc33a1c0439adb3ee66065ac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forecastLinePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c, type: 3}
+  startTransform: {fileID: 1379598557098622953}
+  fireController: {fileID: 1379598557147681626}
+  maxDistance: 500
+  maxSteps: 100
+  timeStep: 0.02
+  checkRadius: 0.15
+  checkLayers:
+    serializedVersion: 2
+    m_Bits: 384
+--- !u!114 &1255494847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172160636742386284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 0
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 19.996157
+        outSlope: 19.996157
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.07533142
+      - serializedVersion: 3
+        time: 0.1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: 0, z: 1}
 --- !u!1 &3860864302706457685
 GameObject:
   m_ObjectHideFlags: 0

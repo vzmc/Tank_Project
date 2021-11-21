@@ -5,7 +5,7 @@ using System.Linq;
 namespace Utility
 {
     /// <summary>
-    /// 方程式の解を求める
+    /// 方程式の解を求めるユーティリティ(計算精度を高めるためにdoubleを使用)
     /// </summary>
     public static class CalcEquationUtility
     {
@@ -54,7 +54,7 @@ namespace Utility
         }
 
         /// <summary>
-        /// 三次方程式
+        /// 三次方程式(盛金の方法)
         /// </summary>
         /// <param name="a3"></param>
         /// <param name="a2"></param>
@@ -75,39 +75,37 @@ namespace Utility
 
             if (A == 0 && B == 0)
             {
-                var x = -a1 / a2;
+                var x = -a2 / (3 * a3);
                 return new List<double> {x, x, x};
             }
 
             if (delta > 0)
             {
-                var rootDelta = Math.Sqrt(delta);
-                var y1 = A * a2 + 3 * a3 * ((-B + rootDelta) / 2);
-                var y2 = A * a2 + 3 * a3 * ((-B - rootDelta) / 2);
+                var sqrtDelta = Math.Sqrt(delta);
+                var y1 = A * a2 + 3 * a3 * ((-B + sqrtDelta) * 0.5);
+                var y2 = A * a2 + 3 * a3 * ((-B - sqrtDelta) * 0.5);
+                var cbrtY1 = Math.Cbrt(y1);
+                var cbrtY2 = Math.Cbrt(y2);
                 
-                const double oneThird = 1.0 / 3.0;
-                var x1 = (-a2 - (Math.Pow(y1, oneThird) + Math.Pow(y2, oneThird))) / (3 * a3);
-                if (!(Math.Abs(y1 - y2) < float.Epsilon))
+                var x1 = (-a2 - (cbrtY1 + cbrtY2)) / (3 * a3);
+                if (Math.Abs(cbrtY1 - cbrtY2) > double.Epsilon)
                 {
                     return new List<double> { x1 };
                 }
                 
-                var x2 = (-2 * a2 + (Math.Pow(y1, oneThird) + Math.Pow(y2, oneThird))) / (6 * a3);
-                var x3 = x2;
-                return new List<double> { x1, x2, x3 };
+                var x2 = (-2 * a2 + (cbrtY1 + cbrtY2)) / (6 * a3);
+                return new List<double> { x1, x2, x2 };
             }
 
-            if (delta == 0 && A != 0)
+            if (delta == 0)
             {
                 var k = B / A;
                 var x1 = -a2 / a3 + k;
                 var x2 = -k / 2;
-                var x3 = x2;
-
-                return new List<double> { x1, x2, x3 };
+                return new List<double> { x1, x2, x2 };
             }
 
-            if (delta < 0 && A > 0)
+            if (delta < 0)
             {
                 var rootA = Math.Sqrt(A);
                 var t = (2 * A * a2 - 3 * a3 * B) / (2 * A * rootA);
@@ -128,7 +126,7 @@ namespace Utility
         }
 
         /// <summary>
-        /// 四次方程式
+        /// 四次方程式(フェラーリの方法)
         /// </summary>
         /// <param name="a4"></param>
         /// <param name="a3"></param>
@@ -143,7 +141,6 @@ namespace Utility
                 return CalcCubicEquation(a3, a2, a1, a0);
             }
             
-            var A4 = 1.0;
             var A3 = a3 / a4;
             var A2 = a2 / a4;
             var A1 = a1 / a4;
@@ -161,7 +158,7 @@ namespace Utility
         }
         
         /// <summary>
-        /// 四次方程式(三次の項目がない時)
+        /// 四次方程式(三次の項目がない時)(フェラーリの方法)
         /// </summary>
         /// <param name="a4"></param>
         /// <param name="a2"></param>
@@ -190,19 +187,17 @@ namespace Utility
                 return new List<double>();
             }
 
-            var u = uList.First(x => x >= 0);
+            var u = uList.Max();
             var rootU = Math.Sqrt(u);
 
             var a_1 = 1.0;
             var b_1 = rootU;
             var c_1 = (p + u) / 2 - (rootU * q) / (2 * u);
-
             var x12 = CalcQuadraticEquation(a_1, b_1, c_1);
         
             var a_2 = 1.0;
             var b_2 = -rootU;
             var c_2 = (p + u) / 2 + (rootU * q) / (2 * u);
-        
             var x34 = CalcQuadraticEquation(a_2, b_2, c_2);
 
             var resultList = x12.Concat(x34).ToList();

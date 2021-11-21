@@ -4,8 +4,9 @@ public class AimController : MonoBehaviour
 {
     [SerializeField] private Renderer aimPointPrefab;
     [SerializeField] private FortController fortController;
-    [SerializeField] private LayerMask rayCastLayerMask;
-    [SerializeField] private float rayCastDistance;
+    
+    [SerializeField] private LayerMask checkLayers;
+    [SerializeField] private float maxDistance;
     
     private Transform cameraTransform;
     private Renderer aimPointRenderer;
@@ -16,12 +17,13 @@ public class AimController : MonoBehaviour
     {
         aimPointRenderer = Instantiate(aimPointPrefab);
         aimPointRenderer.enabled = false;
+
         cameraTransform = Camera.main.transform;
     }
 
     private void FixedUpdate()
     {
-        if (Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out var hitInfo, rayCastDistance, rayCastLayerMask))
+        if (Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out var hitInfo, maxDistance, checkLayers))
         {
             aimPoint = hitInfo.point;
             aimPointRenderer.enabled = true;
@@ -31,7 +33,7 @@ public class AimController : MonoBehaviour
         }
         else
         {
-            aimPoint = cameraTransform.position + cameraTransform.forward * rayCastDistance;
+            aimPoint = cameraTransform.position + cameraTransform.forward * maxDistance;
             aimPointRenderer.enabled = false;
         }
         
