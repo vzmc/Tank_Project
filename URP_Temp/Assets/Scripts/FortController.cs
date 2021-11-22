@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Utility;
 
 public class FortController : MonoBehaviour
 {
-    enum AimMode
-    {
-        Line,
-        Parabola,
-    }
-    
+
     [SerializeField] private MeshRenderer landingPointPrefab;
     [SerializeField] private LineRenderer fireLinePrefab;
 
@@ -25,8 +17,6 @@ public class FortController : MonoBehaviour
     [SerializeField] private float barrelRotateSpeed = 30;
     [SerializeField] private float maxBarrelPitch = 15;
     [SerializeField] private float minBarrelPitch = -45;
-    
-    [SerializeField] private AimMode aimMode;
 
     private float fortLength;
     private ShellMotionType shellMotionType;

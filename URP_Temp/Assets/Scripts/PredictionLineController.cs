@@ -18,8 +18,9 @@ public class PredictionLineController : MonoBehaviour
     
     [Header("Parabola")]
     [SerializeField] private int maxSteps;
-    [SerializeField] private float timeStep;
+    [SerializeField] private float checkTimeStep;
     [SerializeField] private float checkRadius;
+    [SerializeField] private int lineDownSample;
     
     [Header("CheckLayers")]
     [SerializeField] private LayerMask checkLayers;
@@ -63,7 +64,7 @@ public class PredictionLineController : MonoBehaviour
             }
             case ShellMotionType.Parabola:
             {
-                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, timeStep, maxSteps, checkRadius, checkLayers);
+                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, checkTimeStep, maxSteps, checkRadius, checkLayers);
                 break;
             }
         }
@@ -95,11 +96,22 @@ public class PredictionLineController : MonoBehaviour
         for (int i = 0; i < maxStep; i++)
         {
             var point = CalcParabolaUtility.CalcParabolaPoint(startPoint, startVelocity, acceleration, timeStep * i);
-            pointList.Add(point);
-
             if (Physics.CheckSphere(point, checkRadius, checkLayers))
             {
+                pointList.Add(point);
                 break;
+            }
+            
+            if (lineDownSample > 1)
+            {
+                if (i % lineDownSample == 0)
+                {
+                    pointList.Add(point);
+                }
+            }
+            else
+            {
+                pointList.Add(point);
             }
         }
 
