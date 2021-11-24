@@ -1,33 +1,8 @@
-using System;
 using Cinemachine;
+using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility;
-
-public class SyncValue<T>
-{
-    private T value;
-    public T Value
-    {
-        get => value;
-        set
-        {
-            this.value = value;
-            OnValueChanged?.Invoke(value);
-        }
-    }
-    public SyncValue(T init)
-    {
-        value = init;
-    }
-    public event Action<T> OnValueChanged;
-}
-
-public enum ShellMotionType
-{
-    Line,
-    Parabola
-}
 
 public class FireController : MonoBehaviour
 {
@@ -48,31 +23,24 @@ public class FireController : MonoBehaviour
     public float ShellSpeed => shellSpeed;
 
     private Rigidbody loadedShellPrefab;
+    private ShellMotionType loadedShellType;
 
-    public SyncValue<ShellMotionType> SyncShellType { get; } = new SyncValue<ShellMotionType>(ShellMotionType.Line);
-
-    private void Start()
+    private void Awake()
     {
-        ChangeShellType(ShellMotionType.Line);
+        ChangeShellType(DataManager.Instance.LoadedShellType.Value);
+        DataManager.Instance.LoadedShellType.OnValueChanged += ChangeShellType;
     }
 
-    public void ChangeShellType(ShellMotionType type)
+    private void ChangeShellType(ShellMotionType type)
     {
-        switch (type)
+        loadedShellPrefab = type switch
         {
-            case ShellMotionType.Line:
-            {
-                loadedShellPrefab = lineShellPrefab;
-                break;
-            }
-            case ShellMotionType.Parabola:
-            {
-                loadedShellPrefab = parabolaShellPrefab;
-                break;
-            }
-        }
-        
-        SyncShellType.Value = type;
+            ShellMotionType.Line => lineShellPrefab,
+            ShellMotionType.Parabola => parabolaShellPrefab,
+            _ => null
+        };
+
+        loadedShellType = type;
     }
     
     private void Fire()
@@ -83,61 +51,54 @@ public class FireController : MonoBehaviour
         
         impulseSource.GenerateImpulse(firePoint.forward * impulseStrength);
 
-        var landingPoint = Vector3.zero;
-        if (CalcLandingPoint(ref landingPoint))
+        var landingPoint = CalcLandingPoint(firePoint.forward);
+        if (landingPoint.HasValue)
         {
-            var landingPointController = Instantiate(landingPointPrefab, landingPoint, Quaternion.identity);
+            var landingPointController = Instantiate(landingPointPrefab, landingPoint.Value, Quaternion.identity);
             landingPointController.SetOwner(shellRigidbody.gameObject);
         }
     }
 
-    private bool CalcLandingPoint(ref Vector3 landingPoint)
+    private Vector3? CalcLandingPoint(Vector3 fireDirection)
     {
-        switch (SyncShellType.Value)
+        return loadedShellType switch
         {
-            case ShellMotionType.Line:
-            {
-                return CalcLineLandingPoint(ref landingPoint);
-            }
-            case ShellMotionType.Parabola:
-            {
-                return CalcParabolaLandingPoint(ref landingPoint);
-            }
-        }
-        return false;
+            ShellMotionType.Line => CalcLineLandingPoint(fireDirection),
+            ShellMotionType.Parabola => CalcParabolaLandingPoint(fireDirection),
+            _ => null
+        };
     }
-
-    private bool CalcLineLandingPoint(ref Vector3 landingPoint)
+    
+    private Vector3? CalcLineLandingPoint(Vector3 fireDirection)
     {
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out var hitInfo, shellSpeed * shellLifeTime, checkLayers))
+        if (Physics.Raycast(firePoint.position, fireDirection, out var hitInfo, shellSpeed * shellLifeTime, checkLayers))
         {
-            landingPoint = hitInfo.point;
-            return true;
+            return hitInfo.point;
         }
 
-        return false;
+        return null;
     }
-
-    private bool CalcParabolaLandingPoint(ref Vector3 landingPoint)
+    
+    private Vector3? CalcParabolaLandingPoint(Vector3 fireDirection)
     {
         var startPosition = firePoint.position;
-        var startVelocity = shellSpeed * firePoint.forward;
+        var startVelocity = shellSpeed * fireDirection;
         var acceleration = Physics.gravity;
+        
         var currentTime = 0f;
-        for (int i = 0; currentTime <= shellLifeTime; i++)
+        while (currentTime <= shellLifeTime)
         {
-            currentTime = i * checkTimeStep;
             var point = CalcParabolaUtility.CalcParabolaPoint(startPosition, startVelocity, acceleration, currentTime);
             if (Physics.CheckSphere(point, checkRadius, checkLayers))
             {
-                landingPoint = point;
-                return true;
+                return point;
             }
+            currentTime += checkTimeStep;
         }
-        
-        return false;
+
+        return null;
     }
-    
+
     private void OnFire(InputValue inputValue)
     {
         if (inputValue.isPressed)
@@ -145,12 +106,12 @@ public class FireController : MonoBehaviour
             Fire();
         }
     }
-
+    
     private void OnChangeShellType(InputValue inputValue)
     {
         if (inputValue.isPressed)
         {
-            ChangeShellType(SyncShellType.Value == ShellMotionType.Line ? ShellMotionType.Parabola : ShellMotionType.Line);
+            DataManager.Instance.SwitchLoadedShellType();
         }
     }
 }

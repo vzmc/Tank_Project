@@ -1,6 +1,4 @@
-
 using System;
-using System.Diagnostics;
 using UnityEngine;
 
 namespace Data
@@ -17,9 +15,13 @@ namespace Data
                 OnValueChanged?.Invoke(value);
             }
         }
-        public SyncValue(T init)
+        public SyncValue()
         {
-            value = init;
+            Value = default;
+        }
+        public SyncValue(T initValue)
+        {
+            Value = initValue;
         }
         public event Action<T> OnValueChanged;
     }
@@ -29,17 +31,21 @@ namespace Data
         Line,
         Parabola
     }
+
+    public enum VirtualCameraType
+    {
+        FollowPlayer,
+        TopDown
+    }
     
     public class DataManager : MonoBehaviour
     {
-        private static DataManager instance;
-        public static DataManager Instance
-        {
-            get => instance;
-            private set => instance = value;
-        }
-        
-        public SyncValue<ShellMotionType> LoadedShellType { get; } = new SyncValue<ShellMotionType>(ShellMotionType.Line);
+        public static DataManager Instance { get; private set; }
+
+        public SyncValue<ShellMotionType> LoadedShellType { get; } = new(ShellMotionType.Line);
+        public SyncValue<bool> IsUseLowParabola { get; } = new(true);
+        public SyncValue<VirtualCameraType> CurrentCameraType { get; } = new(VirtualCameraType.FollowPlayer);
+        public SyncValue<bool> IsMenuOpen { get; } = new(false);
 
         private void Awake()
         {
@@ -48,8 +54,28 @@ namespace Data
                 Destroy(gameObject);
                 return;
             }
-
+            
             Instance = this;
+        }
+
+        public void SwitchLoadedShellType()
+        {
+            LoadedShellType.Value = LoadedShellType.Value switch
+            {
+                ShellMotionType.Line => ShellMotionType.Parabola,
+                ShellMotionType.Parabola => ShellMotionType.Line,
+                _ => ShellMotionType.Line
+            };
+        }
+        
+        public void SwitchCameraType()
+        {
+            CurrentCameraType.Value = CurrentCameraType.Value switch
+            {
+                VirtualCameraType.FollowPlayer => VirtualCameraType.TopDown,
+                VirtualCameraType.TopDown => VirtualCameraType.FollowPlayer,
+                _ => VirtualCameraType.FollowPlayer
+            };
         }
     }
 }

@@ -1,11 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEngine;
 using Utility;
 
 /// <summary>
-/// 予測線コントローラー
+/// 予測線
 /// </summary>
 public class PredictionLineController : MonoBehaviour
 {
@@ -35,7 +35,8 @@ public class PredictionLineController : MonoBehaviour
 
     private void Awake()
     {
-        fireController.SyncShellType.OnValueChanged += type => shellMotionType = type;
+        shellMotionType = DataManager.Instance.LoadedShellType.Value;
+        DataManager.Instance.LoadedShellType.OnValueChanged += type => shellMotionType = type;
         forecastLine = Instantiate(forecastLinePrefab);
     }
 
@@ -69,12 +70,7 @@ public class PredictionLineController : MonoBehaviour
             }
         }
     }
-
-    public void SetFireMode(ShellMotionType mode)
-    {
-        shellMotionType = mode;
-    }
-
+    
     private void DrawLine(Vector3 startPoint, Vector3 fireDirection, float maxDistance, LayerMask checkLayers)
     {
         Vector3 endPoint;

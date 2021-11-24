@@ -11,15 +11,14 @@ namespace Utility
     public static class CalcFireVectorUtility
     {
         /// <summary>
-        /// 砲身長さ考慮しない関数
+        /// 砲弾発射方向計算(砲身長さ考慮しない)
         /// </summary>
-        /// <param name="fireVector"></param>
         /// <param name="distanceVector"></param>
         /// <param name="accelerationVector"></param>
         /// <param name="fireSpeed"></param>
         /// <param name="useMinTime"></param>
         /// <returns></returns>
-        public static bool CalcFireVector(ref Vector3 fireVector, Vector3 distanceVector, Vector3 accelerationVector, float fireSpeed, bool useMinTime = true)
+        public static Vector3? CalcFireVector(Vector3 distanceVector, Vector3 accelerationVector, float fireSpeed, bool useMinTime = true)
         {
             var v = fireSpeed;
 
@@ -39,7 +38,7 @@ namespace Utility
             if (!resultList.Any(tt => tt > 0))
             {
                 Debug.LogWarning("Out of range!");
-                return false;
+                return null;
             }
 
             var tArray = resultList.Where(tt => tt > 0).Select(Math.Sqrt).ToArray();
@@ -50,27 +49,26 @@ namespace Utility
             var vy = y / t - 0.5 * ay * t;
             var vz = z / t - 0.5 * az * t;
         
-            fireVector.Set((float)vx, (float)vy, (float)vz);
+            var fireVector = new Vector3((float)vx, (float)vy, (float)vz);
             Debug.Log($"FireVector = {fireVector}");
 
-            return true;
+            return fireVector;
         }
-
+        
         /// <summary>
-        /// 砲身長さ考慮する関数
+        /// 砲弾発射方向計算(砲身長さ考慮する)
         /// </summary>
-        /// <param name="fireVector"></param>
         /// <param name="distanceVector"></param>
         /// <param name="accelerationVector"></param>
         /// <param name="fortLength"></param>
         /// <param name="shellSpeed"></param>
         /// <param name="useMinTime"></param>
         /// <returns></returns>
-        public static bool CalcFireVector(ref Vector3 fireVector, Vector3 distanceVector, Vector3 accelerationVector, float fortLength, float shellSpeed, bool useMinTime = true)
+        public static Vector3? CalcFireVector(Vector3 distanceVector, Vector3 accelerationVector, float fortLength, float shellSpeed, bool useMinTime = true)
         {
             if (Mathf.Abs(fortLength) <= float.Epsilon)
             {
-                return CalcFireVector(ref fireVector, distanceVector, accelerationVector, shellSpeed, useMinTime);
+                return CalcFireVector(distanceVector, accelerationVector, shellSpeed, useMinTime);
             }
             
             var v = shellSpeed;
@@ -97,7 +95,7 @@ namespace Utility
             if (!resultList.Any(t => t > 0))
             {
                 Debug.LogWarning("Out of range!");
-                return false;
+                return null;
             }
 
             var tArray = resultList.Where(t => t > 0).ToArray();
@@ -108,10 +106,10 @@ namespace Utility
             var vy = (y - 0.5 * ay * t * t) / (t + l / v);
             var vz = (z - 0.5 * az * t * t) / (t + l / v);
 
-            fireVector.Set((float)vx, (float)vy, (float)vz);
+            var fireVector = new Vector3((float)vx, (float)vy, (float)vz);
             Debug.Log($"FireVector = {fireVector}");
 
-            return true;
+            return fireVector;
         }
     }
 }

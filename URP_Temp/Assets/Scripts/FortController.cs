@@ -1,9 +1,9 @@
+using Data;
 using UnityEngine;
 using Utility;
 
 public class FortController : MonoBehaviour
 {
-
     [SerializeField] private MeshRenderer landingPointPrefab;
     [SerializeField] private LineRenderer fireLinePrefab;
 
@@ -28,8 +28,10 @@ public class FortController : MonoBehaviour
     private void Awake()
     {
         fortLength = (barrelTip.position - barrel.position).magnitude;
-        fireController.SyncShellType.OnValueChanged += type => shellMotionType = type;
         Debug.Log($"fortLength = {fortLength}");
+        
+        shellMotionType = DataManager.Instance.LoadedShellType.Value;
+        DataManager.Instance.LoadedShellType.OnValueChanged += type => shellMotionType = type;
     }
 
     private void Update()
@@ -44,19 +46,25 @@ public class FortController : MonoBehaviour
         {
             case ShellMotionType.Line:
             {
-                var fireVector = worldAimPoint - barrel.position;
-                localAimDirection = transform.InverseTransformDirection(fireVector.normalized);
+                worldFireVector = worldAimPoint - barrel.position;
+                localAimDirection = transform.InverseTransformDirection(worldFireVector.normalized);
                 break;
             }
             case ShellMotionType.Parabola:
             {
                 var distanceVector = worldAimPoint - barrel.position;
-                if (!CalcFireVectorUtility.CalcFireVector(ref worldFireVector, distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed))
+                var resultVector= CalcFireVectorUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                if (resultVector.HasValue)
+                {
+                    worldFireVector = resultVector.Value;
+                }
+                else
                 {
                     var vector = distanceVector;
                     vector.y = new Vector2(vector.x, vector.z).magnitude;
                     worldFireVector = vector;
                 }
+                
                 localAimDirection = transform.InverseTransformDirection(worldFireVector.normalized);
                 break;
             }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AimController : MonoBehaviour
 {
@@ -7,23 +8,33 @@ public class AimController : MonoBehaviour
     
     [SerializeField] private LayerMask checkLayers;
     [SerializeField] private float maxDistance;
-    
+
+    private Camera mainCamera;
     private Transform cameraTransform;
     private Renderer aimPointRenderer;
 
     private Vector3 aimPoint;
+    private Vector2 currentPointPosition;
+    
+    private bool LostControl => Cursor.lockState == CursorLockMode.None;
 
     private void Awake()
     {
         aimPointRenderer = Instantiate(aimPointPrefab);
         aimPointRenderer.enabled = false;
 
-        cameraTransform = Camera.main.transform;
+        mainCamera = Camera.main;
+        cameraTransform = mainCamera.transform;
     }
 
     private void FixedUpdate()
     {
-        if (Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out var hitInfo, maxDistance, checkLayers))
+        if (LostControl)
+        {
+            return;
+        }
+        
+        if (Physics.Raycast(mainCamera.ScreenPointToRay(currentPointPosition), out var hitInfo, maxDistance, checkLayers))
         {
             aimPoint = hitInfo.point;
             aimPointRenderer.enabled = true;
@@ -38,5 +49,16 @@ public class AimController : MonoBehaviour
         }
         
         fortController.SetAimPoint(aimPoint);
+    }
+
+    private void OnPoint(InputValue inputValue)
+    {
+        if (!Application.isFocused || LostControl)
+        {
+            return;
+        }
+        
+        currentPointPosition = inputValue.Get<Vector2>();
+        Debug.Log($"CurrentPointPosition = {currentPointPosition}");
     }
 }

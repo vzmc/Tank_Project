@@ -1,23 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ChinemachineTargetController : MonoBehaviour
+public class PlayerFollowTargetController : MonoBehaviour
 {
     [SerializeField] private Transform cinemachineTarget;
     [SerializeField] private float minPitch = -45;
     [SerializeField] private float maxPitch = 75;
-
+    
+    private VirtualCameraType currentCameraType;
     private Vector2 currentLookInput;
 
-    private bool appFocused;
-    private bool isLookControlled;
+    private bool appHasFocus;
+    private bool LostControl => Cursor.lockState == CursorLockMode.None;
     
     // cinemachine
     private float targetPitch;
     private float targetYaw;
+
+    private void Awake()
+    {
+        currentCameraType = DataManager.Instance.CurrentCameraType.Value;
+        DataManager.Instance.CurrentCameraType.OnValueChanged += type => currentCameraType = type;
+    }
 
     private void Start()
     {
@@ -30,13 +35,17 @@ public class ChinemachineTargetController : MonoBehaviour
 
     private void Update()
     {
+        if (currentCameraType != VirtualCameraType.FollowPlayer || LostControl)
+        {
+            return;
+        }
         CameraRotation();
     }
     
     private void CameraRotation()
     {
         // if there is an input and camera position is not fixed
-        if (currentLookInput.sqrMagnitude >= float.Epsilon)
+        if (currentLookInput.sqrMagnitude > float.Epsilon)
         {
             targetPitch += currentLookInput.y * Time.deltaTime;
             targetYaw += currentLookInput.x * Time.deltaTime;
@@ -64,24 +73,33 @@ public class ChinemachineTargetController : MonoBehaviour
     private void ChangeLookControlState(bool isControlled)
     {
         Cursor.lockState = isControlled ? CursorLockMode.Locked : CursorLockMode.None;
-        isLookControlled = isControlled;
-        
         Debug.Log($"LookControlled = {isControlled}");
     }
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        appFocused = hasFocus;
+        if (currentCameraType != VirtualCameraType.FollowPlayer)
+        {
+            return;
+        }
+        ChangeLookControlState(hasFocus);
     }
 
     private void OnLook(InputValue inputValue)
     {
-        currentLookInput = appFocused && isLookControlled ? inputValue.Get<Vector2>() : Vector2.zero;
+        if (currentCameraType != VirtualCameraType.FollowPlayer)
+        {
+            return;
+        }
+        currentLookInput = LostControl ? Vector2.zero : inputValue.Get<Vector2>();
     }
 
     private void OnChangeLookControl(InputValue inputValue)
     {
-        //Debug.Log(inputValue.isPressed ? "Button is pressed" : "Button is released");
+        if (currentCameraType != VirtualCameraType.FollowPlayer)
+        {
+            return;
+        }
         ChangeLookControlState(!inputValue.isPressed);
     }
 }
