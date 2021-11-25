@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 155010481}
   - component: {fileID: 155010482}
-  - component: {fileID: 155010483}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -171,36 +170,6 @@ MonoBehaviour:
   followPlayerCamera: {fileID: 1957315717}
   topDownCamera: {fileID: 944390450}
   aimMark: {fileID: 1167629571}
---- !u!114 &155010483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155010480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 7f04805b2a8882a4780ed527370354c0, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: GamePlay
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &164500964
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +617,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1083165060046015112, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083165060046015112, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8105714277707330033, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
       propertyPath: m_RootOrder
       value: 10

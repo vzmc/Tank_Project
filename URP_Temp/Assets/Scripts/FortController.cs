@@ -34,8 +34,14 @@ public class FortController : MonoBehaviour
 
     private void Update()
     {
-        fort.localRotation = Quaternion.RotateTowards(fort.localRotation, Quaternion.Euler(0, rotateTargetAngles.y, 0), fortRotateSpeed * Time.deltaTime);
-        barrel.localRotation = Quaternion.RotateTowards(barrel.localRotation, Quaternion.Euler(ClampBarrelPitch(rotateTargetAngles.x), 0, 0), barrelRotateSpeed * Time.deltaTime);
+        fort.localRotation = Quaternion.RotateTowards(
+            fort.localRotation, 
+            Quaternion.Euler(0, rotateTargetAngles.y, 0), 
+            fortRotateSpeed * Time.deltaTime);
+        barrel.localRotation = Quaternion.RotateTowards(
+            barrel.localRotation, 
+            Quaternion.Euler(ClampBarrelPitch(rotateTargetAngles.x), 0, 0), 
+            barrelRotateSpeed * Time.deltaTime);
     }
     
     public void SetAimPoint(Vector3 worldAimPoint)
@@ -45,7 +51,7 @@ public class FortController : MonoBehaviour
             case TrajectoryType.Line:
             {
                 worldFireVector = worldAimPoint - barrel.position;
-                localAimDirection = transform.InverseTransformDirection(worldFireVector.normalized);
+                SetFireDirection(worldFireVector.normalized);
                 break;
             }
             case TrajectoryType.Parabola:
@@ -62,12 +68,15 @@ public class FortController : MonoBehaviour
                     vector.y = new Vector2(vector.x, vector.z).magnitude;
                     worldFireVector = vector;
                 }
-                
-                localAimDirection = transform.InverseTransformDirection(worldFireVector.normalized);
+                SetFireDirection(worldFireVector.normalized);
                 break;
             }
         }
-        
+    }
+
+    public void SetFireDirection(Vector3 fireDirection)
+    {
+        localAimDirection = transform.InverseTransformDirection(fireDirection);
         rotateTargetAngles = Quaternion.FromToRotation(Vector3.forward, localAimDirection).eulerAngles;
     }
     
