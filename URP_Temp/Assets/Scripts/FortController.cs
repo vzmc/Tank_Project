@@ -4,9 +4,6 @@ using Utility;
 
 public class FortController : MonoBehaviour
 {
-    [SerializeField] private MeshRenderer landingPointPrefab;
-    [SerializeField] private LineRenderer fireLinePrefab;
-
     [SerializeField] private FireController fireController;
 
     [SerializeField] private Transform fort;
@@ -19,7 +16,8 @@ public class FortController : MonoBehaviour
     [SerializeField] private float minBarrelPitch = -45;
 
     private float fortLength;
-    private ShellMotionType shellMotionType;
+    private TrajectoryType aimType;
+    private bool usingLowParabola;
 
     private Vector3 worldFireVector;
     private Vector3 localAimDirection;
@@ -30,8 +28,8 @@ public class FortController : MonoBehaviour
         fortLength = (barrelTip.position - barrel.position).magnitude;
         Debug.Log($"fortLength = {fortLength}");
         
-        shellMotionType = DataManager.Instance.LoadedShellType.Value;
-        DataManager.Instance.LoadedShellType.OnValueChanged += type => shellMotionType = type;
+        ShareDataManager.Instance.CurrentAimType.SubscribeValueChangeEvent(type => aimType = type);
+        ShareDataManager.Instance.UsingLowParabola.SubscribeValueChangeEvent(usingLow => usingLowParabola = usingLow);
     }
 
     private void Update()
@@ -42,18 +40,18 @@ public class FortController : MonoBehaviour
     
     public void SetAimPoint(Vector3 worldAimPoint)
     {
-        switch (shellMotionType)
+        switch (aimType)
         {
-            case ShellMotionType.Line:
+            case TrajectoryType.Line:
             {
                 worldFireVector = worldAimPoint - barrel.position;
                 localAimDirection = transform.InverseTransformDirection(worldFireVector.normalized);
                 break;
             }
-            case ShellMotionType.Parabola:
+            case TrajectoryType.Parabola:
             {
                 var distanceVector = worldAimPoint - barrel.position;
-                var resultVector= CalcFireVectorUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed);
+                var resultVector= CalcFireVectorUtility.CalcFireVector(distanceVector, Physics.gravity, fortLength, fireController.ShellSpeed, usingLowParabola);
                 if (resultVector.HasValue)
                 {
                     worldFireVector = resultVector.Value;

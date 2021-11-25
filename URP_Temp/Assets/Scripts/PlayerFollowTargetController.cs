@@ -12,7 +12,7 @@ public class PlayerFollowTargetController : MonoBehaviour
     private Vector2 currentLookInput;
 
     private bool appHasFocus;
-    private bool LostControl => Cursor.lockState == CursorLockMode.None;
+    private bool LostControl => Cursor.lockState == CursorLockMode.None || !Application.isFocused;
     
     // cinemachine
     private float targetPitch;
@@ -20,8 +20,8 @@ public class PlayerFollowTargetController : MonoBehaviour
 
     private void Awake()
     {
-        currentCameraType = DataManager.Instance.CurrentCameraType.Value;
-        DataManager.Instance.CurrentCameraType.OnValueChanged += type => currentCameraType = type;
+        currentCameraType = ShareDataManager.Instance.CurrentCameraType.Value;
+        ShareDataManager.Instance.CurrentCameraType.OnValueChanged += type => currentCameraType = type;
     }
 
     private void Start()

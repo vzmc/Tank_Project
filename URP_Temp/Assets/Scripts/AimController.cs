@@ -16,7 +16,7 @@ public class AimController : MonoBehaviour
     private Vector3 aimPoint;
     private Vector2 currentPointPosition;
     
-    private bool LostControl => Cursor.lockState == CursorLockMode.None;
+    private bool LostControl => Cursor.lockState == CursorLockMode.None || !Application.isFocused;
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class AimController : MonoBehaviour
 
     private void OnPoint(InputValue inputValue)
     {
-        if (!Application.isFocused || LostControl)
+        if (LostControl)
         {
             return;
         }

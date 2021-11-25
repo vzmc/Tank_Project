@@ -1,7 +1,6 @@
 using Cinemachine;
 using Data;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
@@ -12,7 +11,7 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
-        DataManager.Instance.CurrentCameraType.OnValueChanged += ChangeCameraType;
+        ShareDataManager.Instance.CurrentCameraType.SubscribeValueChangeEvent(ChangeCameraType);
     }
 
     private void ChangeCameraType(VirtualCameraType type)
@@ -35,18 +34,6 @@ public class CameraManager : MonoBehaviour
                 aimMark.enabled = false;
                 break;
             }
-            default:
-            {
-                break;
-            }
-        }
-    }
-
-    private void OnChangeCamera(InputValue inputValue)
-    {
-        if (inputValue.isPressed)
-        {
-            DataManager.Instance.SwitchCameraType();
         }
     }
 }

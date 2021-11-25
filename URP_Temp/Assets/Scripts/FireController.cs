@@ -23,20 +23,19 @@ public class FireController : MonoBehaviour
     public float ShellSpeed => shellSpeed;
 
     private Rigidbody loadedShellPrefab;
-    private ShellMotionType loadedShellType;
+    private TrajectoryType loadedShellType;
 
     private void Awake()
     {
-        ChangeShellType(DataManager.Instance.LoadedShellType.Value);
-        DataManager.Instance.LoadedShellType.OnValueChanged += ChangeShellType;
+        ShareDataManager.Instance.CurrentShellType.SubscribeValueChangeEvent(ChangeShellType);
     }
 
-    private void ChangeShellType(ShellMotionType type)
+    private void ChangeShellType(TrajectoryType type)
     {
         loadedShellPrefab = type switch
         {
-            ShellMotionType.Line => lineShellPrefab,
-            ShellMotionType.Parabola => parabolaShellPrefab,
+            TrajectoryType.Line => lineShellPrefab,
+            TrajectoryType.Parabola => parabolaShellPrefab,
             _ => null
         };
 
@@ -63,8 +62,8 @@ public class FireController : MonoBehaviour
     {
         return loadedShellType switch
         {
-            ShellMotionType.Line => CalcLineLandingPoint(fireDirection),
-            ShellMotionType.Parabola => CalcParabolaLandingPoint(fireDirection),
+            TrajectoryType.Line => CalcLineLandingPoint(fireDirection),
+            TrajectoryType.Parabola => CalcParabolaLandingPoint(fireDirection),
             _ => null
         };
     }
@@ -104,14 +103,6 @@ public class FireController : MonoBehaviour
         if (inputValue.isPressed)
         {
             Fire();
-        }
-    }
-    
-    private void OnChangeShellType(InputValue inputValue)
-    {
-        if (inputValue.isPressed)
-        {
-            DataManager.Instance.SwitchLoadedShellType();
         }
     }
 }

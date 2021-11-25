@@ -658,9 +658,7 @@ GameObject:
   - component: {fileID: 3172160636742386282}
   - component: {fileID: 27425839}
   - component: {fileID: 6012485376896612626}
-  - component: {fileID: 8477762766574210666}
   - component: {fileID: 1379598558652251676}
-  - component: {fileID: 9103655848975611998}
   - component: {fileID: 3172160635486679361}
   - component: {fileID: 3054164391815303228}
   - component: {fileID: 1379598558982889964}
@@ -705,7 +703,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1000
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 2
@@ -754,21 +752,6 @@ MonoBehaviour:
   m_DefaultActionMap: GamePlay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &8477762766574210666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172160636742386284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b437697f486310c41afe355209262552, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followPlayerCamera: {fileID: 0}
-  topDownCamera: {fileID: 0}
-  aimMark: {fileID: 0}
 --- !u!114 &1379598558652251676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,21 +767,6 @@ MonoBehaviour:
   cinemachineTarget: {fileID: 1379598558987158695}
   minPitch: -60
   maxPitch: 60
---- !u!114 &9103655848975611998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172160636742386284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c0f36cb297372144867dcffaad004a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  screenMoveRate: 0
-  screenMoveSpeed: 10
 --- !u!114 &3172160635486679361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,7 +810,7 @@ MonoBehaviour:
   fortRotateSpeed: 25
   barrelRotateSpeed: 25
   maxBarrelPitch: 10
-  minBarrelPitch: -45
+  minBarrelPitch: -90
 --- !u!114 &1379598558982889964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,7 +866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
   parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee, type: 3}
-  shellSpeed: 30
+  shellSpeed: 20
   shellLifeTime: 10
   firePoint: {fileID: 1379598557098622953}
   impulseStrength: 0.2

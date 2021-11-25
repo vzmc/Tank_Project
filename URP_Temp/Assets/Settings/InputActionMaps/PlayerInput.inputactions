@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChangeShellType",
-                    "type": "Button",
-                    "id": "67891f15-c10f-451a-bfe4-6ae01d04b163",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "ChangeLookControl",
                     "type": "Button",
                     "id": "a2a968ac-2e38-4a7e-9375-a74ca2b8cd3f",
@@ -87,7 +78,43 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ChangeCamera",
+                    "name": "ChangeAimType",
+                    "type": "Button",
+                    "id": "630d6fd7-6f5b-40e0-add1-628a243d61d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeShellType",
+                    "type": "Button",
+                    "id": "aba0544a-6087-4457-9639-531ce59ffcda",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeParabolaType",
+                    "type": "Button",
+                    "id": "2f2b1874-f4e2-4155-8da8-9e3df8ed8073",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeForecastOnOff",
+                    "type": "Button",
+                    "id": "1e9b15cf-e6ed-4002-ab99-ed79041906f4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeCameraType",
                     "type": "Button",
                     "id": "f15da76d-c52c-47e5-93c7-a931875c85ba",
                     "expectedControlType": "Button",
@@ -418,17 +445,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b3a366a6-5d4f-498f-abe5-0164b16a3641",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ChangeShellType",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "df427ba5-f59d-4238-9d88-60d45963c30f",
                     "path": "<Pointer>/position",
                     "interactions": "",
@@ -440,12 +456,56 @@
                 },
                 {
                     "name": "",
+                    "id": "2514d5e2-27e8-40ed-9e7a-8cabab0355c5",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ChangeParabolaType",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80e67dae-389c-48ba-b2b6-a2b87f9762ab",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ChangeAimType",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7d9beb50-c1c9-48e2-852c-1cba62c582da",
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "ChangeCamera",
+                    "action": "ChangeCameraType",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14c3b1fc-ae97-44a1-b32b-7acd287cc2d2",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ChangeForecastOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "adcbe13a-7a8c-4951-927b-3d3f3190518a",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeShellType",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

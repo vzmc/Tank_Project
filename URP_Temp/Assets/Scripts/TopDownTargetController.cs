@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,13 +12,12 @@ public class TopDownTargetController : MonoBehaviour
     
     private VirtualCameraType currentCameraType;
     
-    private bool LostControl => Cursor.lockState == CursorLockMode.None;
+    private bool LostControl => Cursor.lockState == CursorLockMode.None || !Application.isFocused;
     
     private void Awake()
     {
         mainCamera = Camera.main;
-        currentCameraType = DataManager.Instance.CurrentCameraType.Value;
-        DataManager.Instance.CurrentCameraType.OnValueChanged += type => currentCameraType = type;
+        ShareDataManager.Instance.CurrentCameraType.SubscribeValueChangeEvent(type => currentCameraType = type);
     }
 
     private void Update()
@@ -43,7 +39,7 @@ public class TopDownTargetController : MonoBehaviour
     
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (currentCameraType != VirtualCameraType.FollowPlayer)
+        if (currentCameraType != VirtualCameraType.TopDown)
         {
             return;
         }
@@ -54,6 +50,7 @@ public class TopDownTargetController : MonoBehaviour
     {
         if (currentCameraType != VirtualCameraType.TopDown || LostControl)
         {
+            moveDirection = Vector2.zero;
             return;
         }
         
