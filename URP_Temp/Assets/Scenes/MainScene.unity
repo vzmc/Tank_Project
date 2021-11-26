@@ -617,14 +617,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1083165060046015112, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
-      propertyPath: m_DefaultControlScheme
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1083165060046015112, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
-      propertyPath: m_NeverAutoSwitchControlSchemes
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8105714277707330033, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -672,6 +664,18 @@ PrefabInstance:
     - target: {fileID: 8105714277707330038, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
       propertyPath: m_Name
       value: Tank_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105714277707330038, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105714278847435904, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105714278847435904, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}

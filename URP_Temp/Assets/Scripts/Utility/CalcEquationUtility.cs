@@ -54,7 +54,8 @@ namespace Utility
         }
 
         /// <summary>
-        /// 三次方程式(盛金の方法)
+        /// 三次方程式(盛金公式法)
+        /// https://zh.wikipedia.org/wiki/%E4%B8%89%E6%AC%A1%E6%96%B9%E7%A8%8B#%E7%9B%9B%E9%87%91%E5%85%AC%E5%BC%8F%E6%B3%95
         /// </summary>
         /// <param name="a3"></param>
         /// <param name="a2"></param>
@@ -126,7 +127,8 @@ namespace Utility
         }
 
         /// <summary>
-        /// 四次方程式(フェラーリの方法)
+        /// 四次方程式(フェラーリ公式法)
+        /// https://ja.wikipedia.org/wiki/%E5%9B%9B%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F#%E3%83%95%E3%82%A7%E3%83%A9%E3%83%BC%E3%83%AA%E3%81%AE%E6%96%B9%E6%B3%95
         /// </summary>
         /// <param name="a4"></param>
         /// <param name="a3"></param>
@@ -158,7 +160,7 @@ namespace Utility
         }
         
         /// <summary>
-        /// 四次方程式(三次の項目がない時)(フェラーリの方法)
+        /// 四次方程式(三次の項目がない時)(フェラーリ公式法)
         /// </summary>
         /// <param name="a4"></param>
         /// <param name="a2"></param>

@@ -12,6 +12,7 @@ namespace Utility
     {
         /// <summary>
         /// 砲弾発射方向計算(砲身長さ考慮しない)
+        /// 複2次方程式: https://ja.wikipedia.org/wiki/%E5%9B%9B%E6%AC%A1%E6%96%B9%E7%A8%8B%E5%BC%8F#%E8%A4%87%E4%BA%8C%E6%AC%A1%E5%BC%8F
         /// </summary>
         /// <param name="distanceVector"></param>
         /// <param name="accelerationVector"></param>
@@ -57,6 +58,7 @@ namespace Utility
         
         /// <summary>
         /// 砲弾発射方向計算(砲身長さ考慮する)
+        /// 4次方程式: 
         /// </summary>
         /// <param name="distanceVector"></param>
         /// <param name="accelerationVector"></param>
