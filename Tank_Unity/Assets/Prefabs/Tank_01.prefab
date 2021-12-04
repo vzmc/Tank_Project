@@ -979,6 +979,7 @@ GameObject:
   - component: {fileID: 8105714277707330032}
   - component: {fileID: 6663233404448608181}
   - component: {fileID: 1083165060046015112}
+  - component: {fileID: 6992839374546843386}
   - component: {fileID: 5718972216605199750}
   - component: {fileID: 8105714278933611227}
   - component: {fileID: 8510146535546364838}
@@ -1055,7 +1056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 7f04805b2a8882a4780ed527370354c0, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 7f04805b2a8882a4780ed527370354c0,
+    type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -1073,6 +1075,18 @@ MonoBehaviour:
   m_DefaultActionMap: GamePlay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6992839374546843386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8105714277707330038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f105a6f986cfb4496640ac39e6ab7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5718972216605199750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,7 +1156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af7999775be6de4fbe129b3b2d398b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimPointPrefab: {fileID: 1090099279952108424, guid: b6718c583f70f4d42a294e044244f360, type: 3}
+  aimPointPrefab: {fileID: 1090099279952108424, guid: b6718c583f70f4d42a294e044244f360,
+    type: 3}
   fortController: {fileID: 8510146535546364838}
   checkLayers:
     serializedVersion: 2
@@ -1160,8 +1175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732ac27cc33a1c0439adb3ee66065ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forecastLinePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c, type: 3}
-  forecastLandingPointPrefab: {fileID: 1090099279952108426, guid: 010de924c8b555a46a8c1f2665b97198, type: 3}
+  forecastLinePrefab: {fileID: 203894554339753091, guid: 0ee1eabe6f23a784f83fb750de53a44c,
+    type: 3}
+  forecastLandingPointPrefab: {fileID: 1090099279952108426, guid: 010de924c8b555a46a8c1f2665b97198,
+    type: 3}
   startTransform: {fileID: 5718972217066146931}
   fireController: {fileID: 5718972217046507712}
   maxDistance: 500
@@ -1184,14 +1201,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7277a4ef3caa24b468b873d9ea35fa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120, type: 3}
-  parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee, type: 3}
+  lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120,
+    type: 3}
+  parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee,
+    type: 3}
   shellSpeed: 20
   shellLifeTime: 10
   firePoint: {fileID: 5718972217066146931}
   impulseStrength: 0.2
   impulseSource: {fileID: 2780135431529298011}
-  landingPointPrefab: {fileID: -1827118497690332346, guid: 52055e68fa86e214e81f7692d3a3e424, type: 3}
+  landingPointPrefab: {fileID: -1827118497690332346, guid: 52055e68fa86e214e81f7692d3a3e424,
+    type: 3}
   checkTimeStep: 0.02
   checkRadius: 0.15
   checkLayers:
