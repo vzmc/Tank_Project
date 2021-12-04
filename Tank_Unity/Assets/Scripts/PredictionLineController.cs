@@ -71,7 +71,7 @@ public class PredictionLineController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         switch (aimType)
         {
@@ -108,14 +108,18 @@ public class PredictionLineController : MonoBehaviour
     private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep, float checkRadius, LayerMask checkLayers)
     {
         var pointList = new List<Vector3>();
-        int step = 0;
-        for (; step < maxStep; step++)
+        
+        Vector3 point = Vector3.zero;
+        bool hit = false;
+        for (int step = 0; step < maxStep; step++)
         {
-            var point = CalcParabolaUtility.CalcParabolaPoint(startPoint, startVelocity, acceleration, timeStep * step);
-            if (Physics.CheckSphere(point, checkRadius, checkLayers))
+            Vector3 previousPoint = point;
+            point = CalcParabolaUtility.CalcParabolaPoint(startPoint, startVelocity, acceleration, timeStep * step);
+            if (step > 0 && Physics.Linecast(previousPoint, point, out var hitInfo, checkLayers))
             {
-                pointList.Add(point);
-                DrawForecastLandingPoint(point);
+                pointList.Add(hitInfo.point);
+                DrawForecastLandingPoint(hitInfo.point);
+                hit = true;
                 break;
             }
             
@@ -132,7 +136,7 @@ public class PredictionLineController : MonoBehaviour
             }
         }
 
-        if (step == maxStep)
+        if (!hit)
         {
             DrawForecastLandingPoint(null);
         }

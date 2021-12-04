@@ -83,14 +83,16 @@ public class FireController : MonoBehaviour
         var startPosition = firePoint.position;
         var startVelocity = shellSpeed * fireDirection;
         var acceleration = Physics.gravity;
-        
+
+        Vector3 point = Vector3.zero;
         var currentTime = 0f;
         while (currentTime <= shellLifeTime)
         {
-            var point = CalcParabolaUtility.CalcParabolaPoint(startPosition, startVelocity, acceleration, currentTime);
-            if (Physics.CheckSphere(point, checkRadius, checkLayers))
+            var previousPoint = point;
+            point = CalcParabolaUtility.CalcParabolaPoint(startPosition, startVelocity, acceleration, currentTime);
+            if (currentTime > 0 && Physics.Linecast(previousPoint, point, out var hitInfo, checkLayers))
             {
-                return point;
+                return hitInfo.point;
             }
             currentTime += checkTimeStep;
         }
