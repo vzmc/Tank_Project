@@ -1,5 +1,5 @@
-# Tank_Project
-## v0.1
+# Tank_Project 
+## v0.1 (Unity Version: 2021.2.5f1)
 ### Follow camera
 https://user-images.githubusercontent.com/6869650/145025127-aeb1749f-d484-491d-8243-5dbd5aacc469.mp4
 
