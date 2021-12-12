@@ -619,6 +619,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7157921934730786932, guid: 65e643e82e4044d44a753ba2ef76371a,
+        type: 3}
+      propertyPath: stage
+      value: 
+      objectReference: {fileID: 707152231}
+    - target: {fileID: 7157921934730786932, guid: 65e643e82e4044d44a753ba2ef76371a,
+        type: 3}
+      propertyPath: maxSteps
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7157921934730786932, guid: 65e643e82e4044d44a753ba2ef76371a,
+        type: 3}
+      propertyPath: lineDownSample
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8105714277707330033, guid: 65e643e82e4044d44a753ba2ef76371a,
         type: 3}
       propertyPath: m_RootOrder
@@ -681,6 +696,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65e643e82e4044d44a753ba2ef76371a, type: 3}
+--- !u!4 &707152231 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1425290445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887879696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,11 +1413,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Environment_Prefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345070699079395523, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}

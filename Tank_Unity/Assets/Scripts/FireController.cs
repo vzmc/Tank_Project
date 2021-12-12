@@ -17,10 +17,10 @@ public class FireController : MonoBehaviour
     
     [Header("着弾予測地点用")]
     [SerializeField] private LandingPointController landingPointPrefab;
-
+    
     public float ShellSpeed => shellSpeed;
-    private Rigidbody loadedShellPrefab;
-
+    public Rigidbody LoadedShellPrefab { get; private set; }
+    
     private void Awake()
     {
         ShareDataManager.Instance.CurrentShellType.SubscribeValueChangeEvent(ChangeShellType);
@@ -28,7 +28,7 @@ public class FireController : MonoBehaviour
 
     private void ChangeShellType(TrajectoryType type)
     {
-        loadedShellPrefab = type switch
+        LoadedShellPrefab = type switch
         {
             TrajectoryType.Line => lineShellPrefab,
             TrajectoryType.Parabola => parabolaShellPrefab,
@@ -38,7 +38,7 @@ public class FireController : MonoBehaviour
     
     private void Fire()
     {
-        var shellRigidbody = Instantiate(loadedShellPrefab, firePoint.position, firePoint.rotation);
+        var shellRigidbody = Instantiate(LoadedShellPrefab, firePoint.position, firePoint.rotation);
         shellRigidbody.AddForce(firePoint.forward * shellSpeed, ForceMode.VelocityChange);
         Destroy(shellRigidbody.gameObject, shellLifeTime);
         

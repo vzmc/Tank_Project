@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utility;
 
 /// <summary>
@@ -19,32 +21,38 @@ public class PredictionLineController : MonoBehaviour
     
     [Header("Parabola")]
     [SerializeField] private int maxSteps;
-    [SerializeField] private float checkTimeStep;
     [SerializeField] private float checkRadius;
     [SerializeField, Range(1, 20)] private int lineDownSample;
     
     [Header("CheckLayers")]
     [SerializeField] private LayerMask checkLayers;
+
+    [Header("Stage Object")] 
+    [SerializeField] private Transform stage;
     
     public Vector3? HitPoint { get; private set; }
     
     private LineRenderer forecastLine;
     private GameObject forecastLandingPoint;
     private TrajectoryType aimType;
+    private bool isDrawLine;
+
+    private Scene simulationScene;
 
     private Vector3 StartPoint => startTransform.position;
     private Vector3 StartDirection => startTransform.forward;
     private float StartSpeed => fireController.ShellSpeed;
     private Vector3 Acceleration => Physics.gravity;
 
-    private void Awake()
+    private void Start()
     {
-        ShareDataManager.Instance.CurrentAimType.SubscribeValueChangeEvent(type => aimType = type);
         forecastLine = Instantiate(forecastLinePrefab);
         forecastLandingPoint = Instantiate(forecastLandingPointPrefab);
         
+        ShareDataManager.Instance.CurrentAimType.SubscribeValueChangeEvent(type => aimType = type);
         ShareDataManager.Instance.ForeCastOnOff.SubscribeValueChangeEvent(isOn =>
         {
+            isDrawLine = isOn;
             if (forecastLine != null)
             {
                 forecastLine.enabled = isOn;
@@ -54,6 +62,8 @@ public class PredictionLineController : MonoBehaviour
                 forecastLandingPoint.SetActive(isOn);
             }
         });
+
+        //CreateSimulationScene();
     }
 
     private void Update()
@@ -67,9 +77,17 @@ public class PredictionLineController : MonoBehaviour
             }
             case TrajectoryType.Parabola:
             {
-                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, checkTimeStep, maxSteps,
+                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, Time.fixedDeltaTime, maxSteps,
                     out var hitPoint, lineDownSample, checkRadius, checkLayers);
                 HitPoint = hitPoint;
+                
+                // if (isDrawLine)
+                // {
+                //     var points = GetSimulatePoints(maxSteps, lineDownSample);
+                //     DrawPredictionLine(points);
+                //     HitPoint = points.Last();
+                //     DrawPredictionLandingPoint(HitPoint);
+                // }
                 break;
             }
         }
@@ -88,9 +106,12 @@ public class PredictionLineController : MonoBehaviour
         {
             endPoint = startPoint + distance * fireDirection;
         }
-        
-        DrawPredictionLine(new[] { startPoint, endPoint });
-        DrawPredictionLandingPoint(HitPoint);
+
+        if (isDrawLine)
+        {
+            DrawPredictionLine(new[] { startPoint, endPoint });
+            DrawPredictionLandingPoint(HitPoint);
+        }
     }
 
     private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep,
@@ -99,8 +120,12 @@ public class PredictionLineController : MonoBehaviour
         var points
             = PredictionLineUtility.GetParabolaPredictionPoints(startPoint, startVelocity, acceleration, timeStep, maxStep,
                 out hitPoint, downSample, radius, hitCheckLayerMask);
-        DrawPredictionLine(points);
-        DrawPredictionLandingPoint(hitPoint);
+
+        if (isDrawLine)
+        {
+            DrawPredictionLine(points);
+            DrawPredictionLandingPoint(hitPoint);
+        }
     }
 
     private void DrawPredictionLine(IReadOnlyCollection<Vector3> points)
@@ -120,5 +145,41 @@ public class PredictionLineController : MonoBehaviour
         {
             forecastLandingPoint.SetActive(false);
         }
+    }
+
+    private void CreateSimulationScene()
+    {
+        simulationScene = SceneManager.CreateScene("Simulation",  new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+        var obj = Instantiate(stage, stage.position, stage.rotation);
+        SceneManager.MoveGameObjectToScene(obj.gameObject, simulationScene);
+        foreach (var render in obj.GetComponentsInChildren<Renderer>())
+        {
+            render.enabled = false;
+        }
+    }
+
+    private IReadOnlyCollection<Vector3> GetSimulatePoints(int maxStep, int downSample = 1)
+    {
+        var pointList = new List<Vector3> { StartPoint };
+        var shell = Instantiate(fireController.LoadedShellPrefab, StartPoint, Quaternion.identity);
+        SceneManager.MoveGameObjectToScene(shell.gameObject, simulationScene);
+        foreach (var render in shell.GetComponentsInChildren<Renderer>())
+        {
+            render.enabled = false;
+        }
+        shell.AddForce(StartSpeed * StartDirection, ForceMode.VelocityChange);
+
+        var physicsScene = simulationScene.GetPhysicsScene();
+        for (var step = 1; step <= maxStep; step++)
+        {
+            physicsScene.Simulate(Time.fixedDeltaTime);
+            if (step % downSample == 0)
+            {
+                pointList.Add(shell.position);
+            }
+        }
+        
+        Destroy(shell.gameObject);
+        return pointList;
     }
 }
