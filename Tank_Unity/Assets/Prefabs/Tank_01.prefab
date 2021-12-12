@@ -1201,11 +1201,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7277a4ef3caa24b468b873d9ea35fa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  predictionLineController: {fileID: 7157921934730786932}
   lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120,
     type: 3}
   parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee,
     type: 3}
-  shellSpeed: 20
+  shellSpeed: 15
   shellLifeTime: 10
   firePoint: {fileID: 5718972217066146931}
   impulseStrength: 0.2

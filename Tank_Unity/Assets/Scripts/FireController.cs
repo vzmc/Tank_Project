@@ -6,6 +6,7 @@ using Utility;
 
 public class FireController : MonoBehaviour
 {
+    [SerializeField] private PredictionLineController predictionLineController;
     [SerializeField] private Rigidbody lineShellPrefab;
     [SerializeField] private Rigidbody parabolaShellPrefab;
     [SerializeField] private float shellSpeed;
@@ -50,54 +51,12 @@ public class FireController : MonoBehaviour
         
         impulseSource.GenerateImpulse(firePoint.forward * impulseStrength);
 
-        var landingPoint = CalcLandingPoint(firePoint.forward);
+        var landingPoint = predictionLineController.HitPoint;
         if (landingPoint.HasValue)
         {
             var landingPointController = Instantiate(landingPointPrefab, landingPoint.Value, Quaternion.identity);
             landingPointController.SetOwner(shellRigidbody.gameObject);
         }
-    }
-
-    private Vector3? CalcLandingPoint(Vector3 fireDirection)
-    {
-        return loadedShellType switch
-        {
-            TrajectoryType.Line => CalcLineLandingPoint(fireDirection),
-            TrajectoryType.Parabola => CalcParabolaLandingPoint(fireDirection),
-            _ => null
-        };
-    }
-    
-    private Vector3? CalcLineLandingPoint(Vector3 fireDirection)
-    {
-        if (Physics.Raycast(firePoint.position, fireDirection, out var hitInfo, shellSpeed * shellLifeTime, checkLayers))
-        {
-            return hitInfo.point;
-        }
-
-        return null;
-    }
-    
-    private Vector3? CalcParabolaLandingPoint(Vector3 fireDirection)
-    {
-        var startPosition = firePoint.position;
-        var startVelocity = shellSpeed * fireDirection;
-        var acceleration = Physics.gravity;
-
-        Vector3 point = Vector3.zero;
-        var currentTime = 0f;
-        while (currentTime <= shellLifeTime)
-        {
-            var previousPoint = point;
-            point = CalcParabolaUtility.CalcParabolaPoint(startPosition, startVelocity, acceleration, currentTime);
-            if (currentTime > 0 && Physics.Linecast(previousPoint, point, out var hitInfo, checkLayers))
-            {
-                return hitInfo.point;
-            }
-            currentTime += checkTimeStep;
-        }
-
-        return null;
     }
 
     private void OnFire(InputValue inputValue)

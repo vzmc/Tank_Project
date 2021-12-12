@@ -21,11 +21,13 @@ public class PredictionLineController : MonoBehaviour
     [SerializeField] private int maxSteps;
     [SerializeField] private float checkTimeStep;
     [SerializeField] private float checkRadius;
-    [SerializeField] private int lineDownSample;
+    [SerializeField, Range(1, 20)] private int lineDownSample;
     
     [Header("CheckLayers")]
     [SerializeField] private LayerMask checkLayers;
-
+    
+    public Vector3? HitPoint { get; private set; }
+    
     private LineRenderer forecastLine;
     private GameObject forecastLandingPoint;
     private TrajectoryType aimType;
@@ -43,32 +45,15 @@ public class PredictionLineController : MonoBehaviour
         
         ShareDataManager.Instance.ForeCastOnOff.SubscribeValueChangeEvent(isOn =>
         {
-            enabled = isOn;
+            if (forecastLine != null)
+            {
+                forecastLine.enabled = isOn;
+            }
+            if (forecastLandingPoint != null)
+            {
+                forecastLandingPoint.SetActive(isOn);
+            }
         });
-    }
-
-    private void OnEnable()
-    {
-        if (forecastLine != null)
-        {
-            forecastLine.enabled = true;
-        }
-        if (forecastLandingPoint != null)
-        {
-            forecastLandingPoint.SetActive(true);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (forecastLine != null)
-        {
-            forecastLine.enabled = false;
-        }
-        if (forecastLandingPoint != null)
-        {
-            forecastLandingPoint.SetActive(false);
-        }
     }
 
     private void Update()
@@ -77,80 +62,54 @@ public class PredictionLineController : MonoBehaviour
         {
             case TrajectoryType.Line:
             {
-                DrawLine(StartPoint, StartDirection, maxDistance, checkLayers);
+                DrawLine(StartPoint, checkRadius, StartDirection, maxDistance, checkLayers);
                 break;
             }
             case TrajectoryType.Parabola:
             {
-                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, checkTimeStep, maxSteps, checkRadius, checkLayers);
+                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, checkTimeStep, maxSteps,
+                    out var hitPoint, lineDownSample, checkRadius, checkLayers);
+                HitPoint = hitPoint;
                 break;
             }
         }
     }
     
-    private void DrawLine(Vector3 startPoint, Vector3 fireDirection, float maxDistance, LayerMask checkLayers)
+    private void DrawLine(Vector3 startPoint, float radius, Vector3 fireDirection, float distance, LayerMask hitLayers)
     {
+        HitPoint = null;
         Vector3 endPoint;
-        if (Physics.Raycast(startPoint, fireDirection, out var hitInfo, maxDistance, checkLayers))
+        if (Physics.SphereCast(startPoint, radius, fireDirection, out var hitInfo, distance, hitLayers))
         {
             endPoint = hitInfo.point;
-            DrawForecastLandingPoint(endPoint);
+            HitPoint = endPoint;
         }
         else
         {
-            endPoint = startPoint + fireDirection * maxDistance;
-            DrawForecastLandingPoint(null);
+            endPoint = startPoint + distance * fireDirection;
         }
         
-        DrawForecastLine(new[] { startPoint, endPoint });
+        DrawPredictionLine(new[] { startPoint, endPoint });
+        DrawPredictionLandingPoint(HitPoint);
     }
 
-    private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep, float checkRadius, LayerMask checkLayers)
+    private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep,
+        out Vector3? hitPoint, int downSample = 1, float radius = 0, int hitCheckLayerMask = Physics.DefaultRaycastLayers)
     {
-        var pointList = new List<Vector3>();
-        
-        Vector3 point = Vector3.zero;
-        bool hit = false;
-        for (int step = 0; step < maxStep; step++)
-        {
-            Vector3 previousPoint = point;
-            point = CalcParabolaUtility.CalcParabolaPoint(startPoint, startVelocity, acceleration, timeStep * step);
-            if (step > 0 && Physics.Linecast(previousPoint, point, out var hitInfo, checkLayers))
-            {
-                pointList.Add(hitInfo.point);
-                DrawForecastLandingPoint(hitInfo.point);
-                hit = true;
-                break;
-            }
-            
-            if (lineDownSample > 1)
-            {
-                if (step % lineDownSample == 0)
-                {
-                    pointList.Add(point);
-                }
-            }
-            else
-            {
-                pointList.Add(point);
-            }
-        }
-
-        if (!hit)
-        {
-            DrawForecastLandingPoint(null);
-        }
-        
-        DrawForecastLine(pointList);
+        var points
+            = PredictionLineUtility.GetParabolaPredictionPoints(startPoint, startVelocity, acceleration, timeStep, maxStep,
+                out hitPoint, downSample, radius, hitCheckLayerMask);
+        DrawPredictionLine(points);
+        DrawPredictionLandingPoint(hitPoint);
     }
 
-    private void DrawForecastLine(IReadOnlyCollection<Vector3> points)
+    private void DrawPredictionLine(IReadOnlyCollection<Vector3> points)
     {
         forecastLine.positionCount = points.Count;
         forecastLine.SetPositions(points.ToArray());
     }
 
-    private void DrawForecastLandingPoint(Vector3? position)
+    private void DrawPredictionLandingPoint(Vector3? position)
     {
         if (position.HasValue)
         {

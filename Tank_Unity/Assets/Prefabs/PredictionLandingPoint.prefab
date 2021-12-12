@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1090099279952108424}
   - component: {fileID: -461763791676882439}
   m_Layer: 9
-  m_Name: ForecastLandingPoint
+  m_Name: PredictionLandingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
