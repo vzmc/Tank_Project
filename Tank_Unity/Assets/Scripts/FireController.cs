@@ -17,14 +17,9 @@ public class FireController : MonoBehaviour
     
     [Header("着弾予測地点用")]
     [SerializeField] private LandingPointController landingPointPrefab;
-    [SerializeField] private float checkTimeStep;
-    [SerializeField] private float checkRadius;
-    [SerializeField] private LayerMask checkLayers;
 
     public float ShellSpeed => shellSpeed;
-
     private Rigidbody loadedShellPrefab;
-    private TrajectoryType loadedShellType;
 
     private void Awake()
     {
@@ -39,8 +34,6 @@ public class FireController : MonoBehaviour
             TrajectoryType.Parabola => parabolaShellPrefab,
             _ => null
         };
-
-        loadedShellType = type;
     }
     
     private void Fire()
