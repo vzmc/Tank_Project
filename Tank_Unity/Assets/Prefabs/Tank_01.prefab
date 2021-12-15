@@ -670,7 +670,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5718972217066146931}
-  - component: {fileID: 2780135431529298011}
   m_Layer: 6
   m_Name: BarrelTip
   m_TagString: Untagged
@@ -693,86 +692,6 @@ Transform:
   m_Father: {fileID: 8105714278847435904}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2780135431529298011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5718972217066146930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ImpulseDefinition:
-    m_ImpulseChannel: 1
-    m_ImpulseShape: 0
-    m_CustomImpulseShape:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 19.996157
-        outSlope: 19.996157
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.07533142
-      - serializedVersion: 3
-        time: 0.1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ImpulseDuration: 0.2
-    m_ImpulseType: 0
-    m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 0}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
-    m_RepeatMode: 0
-    m_Randomize: 1
-    m_TimeEnvelope:
-      m_AttackShape:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_DecayShape:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_AttackTime: 0
-      m_SustainTime: 0.2
-      m_DecayTime: 0.7
-      m_ScaleWithImpact: 1
-      m_HoldForever: 0
-    m_ImpactRadius: 100
-    m_DirectionMode: 0
-    m_DissipationMode: 2
-    m_DissipationDistance: 100
-    m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 0, y: 0, z: 1}
 --- !u!1 &5718972217139481058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,8 +1059,8 @@ MonoBehaviour:
   fort: {fileID: 5718972217139481059}
   barrel: {fileID: 8105714279217603337}
   barrelTip: {fileID: 5718972217066146931}
-  fortRotateSpeed: 25
-  barrelRotateSpeed: 25
+  fortRotateSpeed: 30
+  barrelRotateSpeed: 30
   maxBarrelPitch: 10
   minBarrelPitch: -90
 --- !u!114 &5718972216266166902
@@ -1182,13 +1101,13 @@ MonoBehaviour:
   startTransform: {fileID: 5718972217066146931}
   fireController: {fileID: 5718972217046507712}
   maxDistance: 500
-  maxSteps: 1000
-  checkTimeStep: 0.02
+  maxSteps: 500
   checkRadius: 0.15
   lineDownSample: 5
   checkLayers:
     serializedVersion: 2
     m_Bits: 384
+  stage: {fileID: 0}
 --- !u!114 &5718972217046507712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1202,15 +1121,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   predictionLineController: {fileID: 7157921934730786932}
-  lineShellPrefab: {fileID: 879211431225237171, guid: 0d1bef54f27b5414cbf2bd48d57a0120,
+  lineShellPrefab: {fileID: -2270659026826992561, guid: 0d1bef54f27b5414cbf2bd48d57a0120,
     type: 3}
-  parabolaShellPrefab: {fileID: 879211431225237171, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee,
+  parabolaShellPrefab: {fileID: 2636627638004646578, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee,
     type: 3}
-  shellSpeed: 15
-  shellLifeTime: 10
   firePoint: {fileID: 5718972217066146931}
-  impulseStrength: 0.2
-  impulseSource: {fileID: 2780135431529298011}
+  shellSpeed: 15
+  shellLifeSpan: 10
   landingPointPrefab: {fileID: -1827118497690332346, guid: 52055e68fa86e214e81f7692d3a3e424,
     type: 3}
 --- !u!1 &8105714277730251557

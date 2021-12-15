@@ -1,3 +1,4 @@
+using System.Linq;
 using Cinemachine;
 using Data;
 using UnityEngine;
@@ -7,19 +8,17 @@ using Utility;
 public class FireController : MonoBehaviour
 {
     [SerializeField] private PredictionLineController predictionLineController;
-    [SerializeField] private Rigidbody lineShellPrefab;
-    [SerializeField] private Rigidbody parabolaShellPrefab;
-    [SerializeField] private float shellSpeed;
-    [SerializeField] private float shellLifeTime;
+    [SerializeField] private ShellController lineShellPrefab;
+    [SerializeField] private ShellController parabolaShellPrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float impulseStrength;
-    [SerializeField] private CinemachineImpulseSource impulseSource;
-    
+    [SerializeField] private float shellSpeed;
+    [SerializeField] private float shellLifeSpan;
+
     [Header("着弾予測地点用")]
     [SerializeField] private LandingPointController landingPointPrefab;
     
     public float ShellSpeed => shellSpeed;
-    public Rigidbody LoadedShellPrefab { get; private set; }
+    public ShellController LoadedShellPrefab { get; private set; }
     
     private void Awake()
     {
@@ -38,17 +37,14 @@ public class FireController : MonoBehaviour
     
     private void Fire()
     {
-        var shellRigidbody = Instantiate(LoadedShellPrefab, firePoint.position, firePoint.rotation);
-        shellRigidbody.AddForce(firePoint.forward * shellSpeed, ForceMode.VelocityChange);
-        Destroy(shellRigidbody.gameObject, shellLifeTime);
+        var shell = Instantiate(LoadedShellPrefab, firePoint.position, firePoint.rotation);
+        shell.Shot(firePoint.forward * shellSpeed, shellLifeSpan, true);
         
-        impulseSource.GenerateImpulse(firePoint.forward * impulseStrength);
-
-        var landingPoint = predictionLineController.HitPoint;
-        if (landingPoint.HasValue)
+        if (predictionLineController.HitPointList.Count > 0)
         {
-            var landingPointController = Instantiate(landingPointPrefab, landingPoint.Value, Quaternion.identity);
-            landingPointController.SetOwner(shellRigidbody.gameObject);
+            var landingPoint = predictionLineController.HitPointList.First();
+            var landingPointController = Instantiate(landingPointPrefab, landingPoint, Quaternion.identity);
+            landingPointController.SetOwner(shell.gameObject);
         }
     }
 

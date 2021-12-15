@@ -47,6 +47,12 @@ namespace Data
         FollowPlayer,
         TopDown
     }
+
+    public enum PredictionType
+    {
+        Manual,
+        PhysicsSimulation,
+    }
     
     public class ShareDataManager : MonoBehaviour
     {
@@ -62,14 +68,13 @@ namespace Data
         {
             if (Instance != null)
             {
-                Destroy(gameObject);
                 return;
             }
             
             Instance = this;
         }
 
-        public void SwitchAimType()
+        private void SwitchAimType()
         {
             CurrentAimType.Value = CurrentAimType.Value switch
             {
@@ -78,8 +83,8 @@ namespace Data
                 _ => TrajectoryType.Line
             };
         }
-        
-        public void SwitchShellType()
+
+        private void SwitchShellType()
         {
             CurrentShellType.Value = CurrentShellType.Value switch
             {
@@ -89,17 +94,17 @@ namespace Data
             };
         }
 
-        public void SwitchParabolaType()
+        private void SwitchParabolaType()
         {
             UsingLowParabola.Value = !UsingLowParabola.Value;
         }
 
-        public void SwitchForeCastOnOff()
+        private void SwitchForeCastOnOff()
         {
             ForeCastOnOff.Value = !ForeCastOnOff.Value;
         }
-        
-        public void SwitchCameraType()
+
+        private void SwitchCameraType()
         {
             CurrentCameraType.Value = CurrentCameraType.Value switch
             {

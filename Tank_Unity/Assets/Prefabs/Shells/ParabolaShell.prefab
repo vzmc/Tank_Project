@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6899942287235444479}
   - component: {fileID: -4219516621918709376}
   - component: {fileID: -3608734142084442394}
+  - component: {fileID: 2636627638004646578}
   m_Layer: 9
   m_Name: ParabolaShell
   m_TagString: Untagged
@@ -100,7 +101,7 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!135 &6899942287235444479
@@ -304,3 +305,18 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: 0, z: 1}
+--- !u!114 &2636627638004646578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899942287235444472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd1089c13a1de54ba578b8f9b8b110e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 879211431225237171}
+  impulseSource: {fileID: -3608734142084442394}
+  impulseStrength: 0.2

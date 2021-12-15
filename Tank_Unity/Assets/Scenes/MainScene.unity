@@ -632,7 +632,7 @@ PrefabInstance:
     - target: {fileID: 7157921934730786932, guid: 65e643e82e4044d44a753ba2ef76371a,
         type: 3}
       propertyPath: lineDownSample
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8105714277707330033, guid: 65e643e82e4044d44a753ba2ef76371a,
         type: 3}

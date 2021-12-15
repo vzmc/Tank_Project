@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Data;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using Utility;
 
@@ -29,8 +30,9 @@ public class PredictionLineController : MonoBehaviour
 
     [Header("Stage Object")] 
     [SerializeField] private Transform stage;
-    
-    public Vector3? HitPoint { get; private set; }
+
+    //public Vector3? HitPoint { get; private set; } = null;
+    public List<Vector3> HitPointList { get; } = new List<Vector3>();
     
     private LineRenderer forecastLine;
     private GameObject forecastLandingPoint;
@@ -63,11 +65,13 @@ public class PredictionLineController : MonoBehaviour
             }
         });
 
-        //CreateSimulationScene();
+        CreateSimulationScene();
     }
 
     private void Update()
     {
+        HitPointList.Clear();
+        
         switch (aimType)
         {
             case TrajectoryType.Line:
@@ -77,17 +81,16 @@ public class PredictionLineController : MonoBehaviour
             }
             case TrajectoryType.Parabola:
             {
-                DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, Time.fixedDeltaTime, maxSteps,
-                    out var hitPoint, lineDownSample, checkRadius, checkLayers);
-                HitPoint = hitPoint;
-                
-                // if (isDrawLine)
-                // {
-                //     var points = GetSimulatePoints(maxSteps, lineDownSample);
-                //     DrawPredictionLine(points);
-                //     HitPoint = points.Last();
-                //     DrawPredictionLandingPoint(HitPoint);
-                // }
+                //DrawParabola(StartPoint, StartDirection * StartSpeed, Acceleration, Time.fixedDeltaTime, maxSteps, lineDownSample, checkRadius, checkLayers);
+
+                if (isDrawLine)
+                {
+                    Profiler.BeginSample("CalcPointsPhysic");
+                    var points = GetSimulatePoints(maxSteps, lineDownSample);
+                    Profiler.EndSample();
+                    DrawPredictionLine(points);
+                    DrawPredictionLandingPoint(HitPointList);
+                }
                 break;
             }
         }
@@ -95,37 +98,41 @@ public class PredictionLineController : MonoBehaviour
     
     private void DrawLine(Vector3 startPoint, float radius, Vector3 fireDirection, float distance, LayerMask hitLayers)
     {
-        HitPoint = null;
+        if (!isDrawLine) return;
+        
         Vector3 endPoint;
         if (Physics.SphereCast(startPoint, radius, fireDirection, out var hitInfo, distance, hitLayers))
         {
             endPoint = hitInfo.point;
-            HitPoint = endPoint;
+            HitPointList.Add(hitInfo.point);
         }
         else
         {
             endPoint = startPoint + distance * fireDirection;
         }
-
-        if (isDrawLine)
-        {
-            DrawPredictionLine(new[] { startPoint, endPoint });
-            DrawPredictionLandingPoint(HitPoint);
-        }
+        
+        DrawPredictionLine(new[] { startPoint, endPoint });
+        DrawPredictionLandingPoint(HitPointList);
     }
 
-    private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep,
-        out Vector3? hitPoint, int downSample = 1, float radius = 0, int hitCheckLayerMask = Physics.DefaultRaycastLayers)
+    private void DrawParabola(Vector3 startPoint, Vector3 startVelocity, Vector3 acceleration, float timeStep, int maxStep, 
+        int downSample = 1, float radius = 0, int hitCheckLayerMask = Physics.DefaultRaycastLayers)
     {
+        if (!isDrawLine) return;
+        
+        Profiler.BeginSample("CalcPointsManual");
         var points
-            = PredictionLineUtility.GetParabolaPredictionPoints(startPoint, startVelocity, acceleration, timeStep, maxStep,
-                out hitPoint, downSample, radius, hitCheckLayerMask);
+            = PredictionLineUtility.GetParabolaPredictionPoints(startPoint, startVelocity, acceleration, timeStep, maxStep, 
+                out var hitPoint, downSample, radius, hitCheckLayerMask);
+        Profiler.EndSample();
 
-        if (isDrawLine)
+        if (hitPoint.HasValue)
         {
-            DrawPredictionLine(points);
-            DrawPredictionLandingPoint(hitPoint);
+            HitPointList.Add(hitPoint.Value);
         }
+        
+        DrawPredictionLine(points);
+        DrawPredictionLandingPoint(HitPointList);
     }
 
     private void DrawPredictionLine(IReadOnlyCollection<Vector3> points)
@@ -134,12 +141,12 @@ public class PredictionLineController : MonoBehaviour
         forecastLine.SetPositions(points.ToArray());
     }
 
-    private void DrawPredictionLandingPoint(Vector3? position)
+    private void DrawPredictionLandingPoint(IReadOnlyCollection<Vector3> points)
     {
-        if (position.HasValue)
+        if (points.Count > 0)
         {
             forecastLandingPoint.SetActive(true);
-            forecastLandingPoint.transform.position = position.Value;
+            forecastLandingPoint.transform.position = points.First();
         }
         else
         {
@@ -167,15 +174,28 @@ public class PredictionLineController : MonoBehaviour
         {
             render.enabled = false;
         }
-        shell.AddForce(StartSpeed * StartDirection, ForceMode.VelocityChange);
+        
+        shell.Shot(StartSpeed * StartDirection, -1f, false);
+        shell.onHitEvent += hitPoint =>
+        {
+            HitPointList.Add(hitPoint);
+        };
 
         var physicsScene = simulationScene.GetPhysicsScene();
         for (var step = 1; step <= maxStep; step++)
         {
             physicsScene.Simulate(Time.fixedDeltaTime);
+
+            if (HitPointList.Count > 0)
+            {
+                pointList.Add(HitPointList.First());
+                Destroy(shell.gameObject);
+                return pointList;
+            }
+            
             if (step % downSample == 0)
             {
-                pointList.Add(shell.position);
+                pointList.Add(shell.transform.position);
             }
         }
         
