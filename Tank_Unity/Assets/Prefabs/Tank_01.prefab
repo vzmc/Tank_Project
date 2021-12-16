@@ -1101,7 +1101,7 @@ MonoBehaviour:
   startTransform: {fileID: 5718972217066146931}
   fireController: {fileID: 5718972217046507712}
   maxDistance: 500
-  maxSteps: 500
+  maxSteps: 1000
   checkRadius: 0.15
   lineDownSample: 5
   checkLayers:
@@ -1126,7 +1126,7 @@ MonoBehaviour:
   parabolaShellPrefab: {fileID: 2636627638004646578, guid: 6bf5b31546d8c1c4c80c9a3c4e4eddee,
     type: 3}
   firePoint: {fileID: 5718972217066146931}
-  shellSpeed: 15
+  shellSpeed: 20
   shellLifeSpan: 10
   landingPointPrefab: {fileID: -1827118497690332346, guid: 52055e68fa86e214e81f7692d3a3e424,
     type: 3}
